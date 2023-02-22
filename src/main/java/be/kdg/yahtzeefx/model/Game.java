@@ -1,6 +1,7 @@
 package be.kdg.yahtzeefx.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Game {
     private int gameId;
@@ -11,14 +12,21 @@ public class Game {
         this.gameId = gameId;
         this.startTime = startTime;
         this.endTime = endTime;
+
     }
 
     //start game
-    public void startGame(){}
+    public void startGame() {
+
+    }
 
     //start round
-    public void playRound(){}
+    public void playRound() {
+    }
 
     //end game
-    public void endGame(){}
+    public void endGame() {
+    }
+
+
 }
