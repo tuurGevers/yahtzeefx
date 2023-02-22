@@ -5,12 +5,14 @@ import be.kdg.yahtzeefx.model.Scoring;
 
 public class Carre extends Scoring {
     @Override
-    protected void getScore(Dice[] dice) {
+    protected int getScore(Dice[] dice) {
 
+        return 0;
     }
 
     @Override
-    protected void isValid(Dice[] dice) {
+    protected boolean isValid(Dice[] dice) {
 
+        return false;
     }
 }

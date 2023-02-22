@@ -11,12 +11,18 @@ public class Eyes extends Scoring {
     }
 
     @Override
-    protected void getScore(Dice[] dice) {
-
+    public int getScore(Dice[] dice) {
+        int count = 0;
+        for (Dice d : dice) {
+            if (d.getValue() == eye) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
-    public void isValid(Dice[] dice){
-
+    public boolean isValid(Dice[] dice){
+        return true;
     }
 }
