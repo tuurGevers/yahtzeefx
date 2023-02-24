@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Player {
     private int playerId;
     private String name;
-    private Score score;
+    public Score score;
 
     public Player(int playerId, String name, Score score) {
         this.playerId = playerId;

@@ -1,12 +1,14 @@
 package be.kdg.yahtzeefx.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Score  {
     private int points;
-    private Player player;
-
-    public Score(Player player) {
-        this.player = player;
+    public Map<String, Integer> scores;
+    public Score() {
         this.points= 0;
+        this.scores = new HashMap<>();
     }
 
     public void addScore(int score){

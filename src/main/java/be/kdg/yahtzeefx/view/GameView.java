@@ -15,6 +15,7 @@ public class GameView extends GridPane {
     private ImageView dice5;
     private Button trow;
     private Label trowCount;
+    private Label score;
 
     public GameView() {
         this.initialiseNodes();
@@ -29,6 +30,7 @@ public class GameView extends GridPane {
         dice5 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
         trow = new Button("gooi");
         trowCount = new Label("trows: 1");
+        score = new Label("score: 0");
     }
 
     private void layoutNodes() {
@@ -39,9 +41,11 @@ public class GameView extends GridPane {
         this.add(dice5, 3, 3);
         this.add(trow, 2, 4, 2, 1);
         this.add(trowCount, 0, 1);
+        this.add(score, 0, 2);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));
+
 
     }
 
@@ -71,5 +75,9 @@ public class GameView extends GridPane {
 
     Label getTrowCount() {
         return trowCount;
+    }
+
+    Label getScore() {
+        return score;
     }
 }

@@ -18,7 +18,7 @@ public class YahtzeeView extends GridPane {
 
     private void layoutNodes() {
         this.add(gameView,0,0);
-        this.add(scoreView,0,1);
+        this.add(scoreView,1,0);
 
     }
 

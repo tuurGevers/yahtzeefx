@@ -18,7 +18,7 @@ public class Eyes extends Scoring {
                 count++;
             }
         }
-        return count;
+        return count*this.eye;
     }
 
     @Override
