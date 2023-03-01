@@ -27,7 +27,7 @@ public class Main extends Application {
         primaryStage.setTitle("yahtzee");
         presenter.addWindowEventHandlers();
         primaryStage.setWidth(650);
-        primaryStage.setHeight(550);
+        primaryStage.setHeight(600);
         primaryStage.centerOnScreen();
 
         primaryStage.show();

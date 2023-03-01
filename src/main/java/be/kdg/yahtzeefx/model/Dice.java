@@ -28,4 +28,8 @@ public class Dice {
     public boolean isHeld() {
         return isHeld;
     }
+
+    public void setHeld(boolean held) {
+        isHeld = held;
+    }
 }

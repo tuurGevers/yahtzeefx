@@ -1,6 +1,7 @@
 package be.kdg.yahtzeefx.view;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,14 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class GameView extends GridPane {
-    private ImageView dice1;
-    private ImageView dice2;
-    private ImageView dice3;
-    private ImageView dice4;
-    private ImageView dice5;
+    private ImageView[] dice;
     private Button trow;
     private Label trowCount;
     private Label score;
+    private Alert a;
 
     public GameView() {
         this.initialiseNodes();
@@ -23,22 +21,24 @@ public class GameView extends GridPane {
     }
 
     private void initialiseNodes() {
-        dice1 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
-        dice2 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
-        dice3 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
-        dice4 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
-        dice5 = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
+        dice = new ImageView[5];
+        for (int i = 0; i < 5; i++) {
+            dice[i] = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
+            dice[i].setId(String.valueOf(i));
+        }
+
         trow = new Button("gooi");
         trowCount = new Label("trows: 1");
         score = new Label("score: 0");
+        a = new Alert(Alert.AlertType.INFORMATION);
     }
 
     private void layoutNodes() {
-        this.add(dice1, 1, 2);
-        this.add(dice2, 2, 2);
-        this.add(dice3, 3, 2);
-        this.add(dice4, 2, 3);
-        this.add(dice5, 3, 3);
+        this.add(dice[0], 1, 2);
+        this.add(dice[1], 2, 2);
+        this.add(dice[2], 3, 2);
+        this.add(dice[3], 2, 3);
+        this.add(dice[4], 3, 3);
         this.add(trow, 2, 4, 2, 1);
         this.add(trowCount, 0, 1);
         this.add(score, 0, 2);
@@ -49,25 +49,6 @@ public class GameView extends GridPane {
 
     }
 
-    ImageView getDice1() {
-        return dice1;
-    }
-
-    ImageView getDice2() {
-        return dice2;
-    }
-
-    ImageView getDice3() {
-        return dice3;
-    }
-
-    ImageView getDice4() {
-        return dice4;
-    }
-
-    ImageView getDice5() {
-        return dice5;
-    }
 
     Button getTrow() {
         return trow;
@@ -79,5 +60,13 @@ public class GameView extends GridPane {
 
     Label getScore() {
         return score;
+    }
+
+    ImageView[] getDice() {
+        return dice;
+    }
+
+    public Alert getA() {
+        return a;
     }
 }

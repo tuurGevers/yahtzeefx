@@ -25,6 +25,7 @@ public class YahtzeeModel {
     BigStreet bigStreet = new BigStreet();
     Yahtzee yahtzee = new Yahtzee();
     Chance chance = new Chance();
+    private boolean finished;
 
     public YahtzeeModel(List<Player> players) {
         this.dice = new Dice[5];
@@ -33,12 +34,13 @@ public class YahtzeeModel {
         }
         this.players = new ArrayList<>();
         this.players.addAll(players);
+        this.finished = false;
     }
 
     //roll all dice
     public void rollDice() {
         for (Dice d : this.dice) {
-            if(!d.isHeld()) d.roll();
+            if (!d.isHeld()) d.roll();
         }
         trows++;
     }
@@ -84,15 +86,47 @@ public class YahtzeeModel {
         if (chance.isValid(this.dice)) {
             score.put("13", chance.getScore(this.dice));
         }
+        System.out.println(finished);
         return score;
     }
 
-
+    public boolean scoreFull(){
+        return players.get(0).score.scores.size() == 13;
+    }
     public Dice[] getDice() {
         return dice;
     }
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void bonusCheck(Player player) {
+        int upperCount = 0;
+        int upperScore = 0;
+        for (int i = 1; i < 7; i++) {
+            if (player.score.scores.containsKey(String.valueOf(i))) {
+                upperCount++;
+                upperScore += player.score.scores.get(String.valueOf(i));
+            }
+        }
+        if (upperCount == 6 && upperScore >= 63 && !player.score.upperBonus) {
+            player.score.upperBonus = true;
+            player.score.addScore(35);
+            System.out.println("upper bonus");
+
+        }
+    }
+
+    public Yahtzee getYahtzee() {
+        return yahtzee;
+    }
+
+    public void setFinished() {
+        this.finished = scoreFull();
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

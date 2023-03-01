@@ -12,6 +12,9 @@ public class ScoreView extends GridPane {
     private Label[] eyeLabels = new Label[13];
     private TextField[] eyeTextFields = new TextField[13];
     private Button[] buttons = new Button[13];
+    private Label upperBonusLabel, yahtzeeBonusLabel;
+    private TextField upperBonusTexfield, yahtzeeBonusTextfield;
+    private Button yahtzeeBonusButton;
 
     public ScoreView() {
         this.initialiseNodes();
@@ -36,17 +39,35 @@ public class ScoreView extends GridPane {
         eyeLabels[10] = new Label("large straight");
         eyeLabels[11] = new Label("yahtzee");
         eyeLabels[12] = new Label("chance");
-
-
+        upperBonusLabel = new Label("upper bonus");
+        yahtzeeBonusLabel = new Label("yahtzee bonus");
+        upperBonusTexfield = new TextField("");
+        yahtzeeBonusTextfield = new TextField("");
+        yahtzeeBonusButton = new Button("add");
     }
 
     private void layoutNodes() {
-        for (int i = 0; i < eyeLabels.length; i++) {
+        for (int i = 0; i < 6; i++) {
             this.add(eyeLabels[i], 0, i);
             this.add(eyeTextFields[i], 1, i);
             eyeTextFields[i].setEditable(false);
             this.add(buttons[i], 2, i);
         }
+        this.add(upperBonusLabel, 0, 6);
+        this.add(upperBonusTexfield, 1, 6);
+        upperBonusTexfield.setEditable(false);
+        for (int i = 6; i < eyeTextFields.length; i++) {
+            this.add(eyeLabels[i], 0, i + 1);
+            this.add(eyeTextFields[i], 1, i + 1);
+            eyeTextFields[i].setEditable(false);
+            this.add(buttons[i], 2, i + 1);
+        }
+        this.add(yahtzeeBonusLabel, 0, 14);
+        this.add(yahtzeeBonusTextfield, 1, 14);
+        this.add(yahtzeeBonusButton, 2, 14);
+
+        upperBonusTexfield.setEditable(false);
+        yahtzeeBonusTextfield.setEditable(false);
 
         this.setHgap(10);
         this.setVgap(10);
@@ -64,5 +85,17 @@ public class ScoreView extends GridPane {
 
     public Button[] getButtons() {
         return buttons;
+    }
+
+    public TextField getUpperBonusTexfield() {
+        return upperBonusTexfield;
+    }
+
+    public TextField getYahtzeeBonusTextfield() {
+        return yahtzeeBonusTextfield;
+    }
+
+    public Button getYahtzeeBonusButton() {
+        return yahtzeeBonusButton;
     }
 }

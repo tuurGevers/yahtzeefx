@@ -5,8 +5,10 @@ import be.kdg.yahtzeefx.model.YahtzeeModel;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class YahtzeePresenter {
     private YahtzeeModel model;
@@ -22,89 +24,74 @@ public class YahtzeePresenter {
 
     }
 
+    int diceIndex = 0;
+
     private void addEventHandlers() {
         view.getGameView().getTrow().setOnAction(
                 event -> {
-                    updateView();
-                }
-        );
-        view.getGameView().getDice1().setOnMouseClicked(
-                MouseEvent -> {
-                    model.getDice()[0].select();
-                    if (model.getDice()[0].isHeld()) {
-                        view.getGameView().getDice1().setScaleY(1.5);
-                    } else {
-                        view.getGameView().getDice1().setScaleY(1);
+                    if (model.trows != 3) {
+                        updateView();
                     }
                 }
         );
 
-        view.getGameView().getDice2().setOnMouseClicked(
-                MouseEvent -> {
-                    model.getDice()[1].select();
-                    if (model.getDice()[1].isHeld()) {
-                        view.getGameView().getDice2().setScaleY(1.5);
-                    } else {
-                        view.getGameView().getDice2().setScaleY(1);
-                    }
-                }
-        );
-
-        view.getGameView().getDice3().setOnMouseClicked(
-                MouseEvent -> {
-                    model.getDice()[2].select();
-                    if (model.getDice()[2].isHeld()) {
-                        view.getGameView().getDice3().setScaleY(1.5);
-                    } else {
-                        view.getGameView().getDice3().setScaleY(1);
-                    }
-                }
-        );
-        view.getGameView().getDice4().setOnMouseClicked(
-                MouseEvent -> {
-                    model.getDice()[3].select();
-                    if (model.getDice()[3].isHeld()) {
-                        view.getGameView().getDice4().setScaleY(1.5);
-                    } else {
-                        view.getGameView().getDice4().setScaleY(1);
-                    }
-                }
-        );
-        view.getGameView().getDice5().setOnMouseClicked(
-                MouseEvent -> {
-                    model.getDice()[4].select();
-                    if (model.getDice()[4].isHeld()) {
-                        view.getGameView().getDice5().setScaleY(1.3);
-                        view.getGameView().getDice5().setScaleX(1.3);
-
-                    } else {
-                        view.getGameView().getDice5().setScaleY(1);
-                        view.getGameView().getDice5().setScaleX(1);
-
-                    }
-                }
-        );
-
-        for (Button button : view.getScoreView().getButtons()) {
-            button.setOnAction(
-                    Event -> {
-                        Map<String, Integer> scoreCard = model.getPlayers().get(0).score.scores;
-                        Map<String, Integer> scores = model.scores();
-                        System.out.println(scores);
-                        System.out.println(scoreCard);
-                        if (!scoreCard.containsKey(String.valueOf(Integer.parseInt(button.getId()) + 1))) {
-                            scoreCard.put(String.valueOf(Integer.parseInt(button.getId()) + 1), scores.get(String.valueOf(Integer.parseInt(button.getId()) + 1)));
-                                model.getPlayers().get(0).score.addScore(scores.getOrDefault(String.valueOf(Integer.parseInt(button.getId()) + 1),0));
-                            view.getGameView().getScore().setText("score: " + model.getPlayers().get(0).score.getPoints());
-                            button.setStyle("-fx-background-color: red;");
-                            button.setDisable(true);
-
+        for (ImageView die : view.getGameView().getDice()) {
+            die.setOnMouseClicked(
+                    MouseEvent -> {
+                        model.getDice()[Integer.parseInt(die.getId())].select();
+                        if (model.getDice()[Integer.parseInt(die.getId())].isHeld()) {
+                            die.setScaleY(1.5);
+                        } else {
+                            die.setScaleY(1);
                         }
-                        System.out.println(scoreCard);
 
                     }
             );
         }
+
+
+        for (Button button : view.getScoreView().getButtons()) {
+            button.setOnAction(
+                    Event -> {
+                        if (model.trows == 3) {
+                            Map<String, Integer> scoreCard = model.getPlayers().get(0).score.scores;
+                            Map<String, Integer> scores = model.scores();
+                            if (!scoreCard.containsKey(String.valueOf(Integer.parseInt(button.getId()) + 1))) {
+                                scoreCard.put(String.valueOf(Integer.parseInt(button.getId()) + 1), scores.get(String.valueOf(Integer.parseInt(button.getId()) + 1)));
+                                model.getPlayers().get(0).score.addScore(scores.getOrDefault(String.valueOf(Integer.parseInt(button.getId()) + 1), 0));
+                                view.getGameView().getScore().setText("score: " + model.getPlayers().get(0).score.getPoints());
+                                button.setStyle("-fx-background-color: red;");
+                                button.setDisable(true);
+
+                            }
+                            model.bonusCheck(model.getPlayers().get(0));
+                            if (model.getPlayers().get(0).score.upperBonus) {
+                                view.getScoreView().getUpperBonusTexfield().setText("+35");
+                            }
+                            model.setFinished();
+                            model.trows = 0;
+                        }
+
+                    }
+            );
+        }
+
+        view.getScoreView().getYahtzeeBonusButton().setOnAction((
+                Event -> {
+                    if (model.getYahtzee().isValid(model.getDice())) {
+                        Map<String, Integer> scoreCard = model.getPlayers().get(0).score.scores;
+                        if (scoreCard.containsKey("12")) {
+                            if (scoreCard.containsKey("14")) {
+                                scoreCard.put("14", scoreCard.get("14") + 100);
+                            } else {
+                                scoreCard.put("14", 100);
+                            }
+                        }
+                        model.setFinished();
+                    }
+
+                }
+        ));
 
     }
 
@@ -115,29 +102,46 @@ public class YahtzeePresenter {
         for (int i = 0; i < 5; i++) {
             aantallen[i] = dice[i].getValue();
         }
-        view.getGameView().getDice1().setImage(new Image(getClass().getResource("/images/die" + aantallen[0] + ".png").toExternalForm()));
-        view.getGameView().getDice2().setImage(new Image(getClass().getResource("/images/die" + aantallen[1] + ".png").toExternalForm()));
-        view.getGameView().getDice3().setImage(new Image(getClass().getResource("/images/die" + aantallen[2] + ".png").toExternalForm()));
-        view.getGameView().getDice4().setImage(new Image(getClass().getResource("/images/die" + aantallen[3] + ".png").toExternalForm()));
-        view.getGameView().getDice5().setImage(new Image(getClass().getResource("/images/die" + aantallen[4] + ".png").toExternalForm()));
+        for (int j = 0; j < 5; j++) {
+            if (!dice[j].isHeld()) {
+                view.getGameView().getDice()[j].setImage(new Image(getClass().getResource("/images/die" + aantallen[j] + ".png").toExternalForm()));
+            }
+        }
         view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
 
         if (model.trows == 3) {
-            model.trows = 0;
             Map<String, Integer> scores = model.scores();
-            int index =0;
+            int index = 0;
             for (TextField field : view.getScoreView().getEyeTextFields()) {
                 String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
+
                 if (scores.containsKey(key)) {
                     field.setText(Integer.toString(scores.get(key)));
-                }else{
+                } else {
                     field.setText("0");
 
                 }
-                if(model.getPlayers().get(0).score.scores.get(key) != null){
-                }
+
                 index++;
             }
+            if (model.getYahtzee().isValid(model.getDice())) {
+                view.getScoreView().getYahtzeeBonusTextfield().setText("+100");
+            }else{
+                view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.getPlayers().get(0).score.scores.getOrDefault("14",0)));
+            }
+
+            for (int i = 0; i < 5; i++) {
+                view.getGameView().getDice()[i].setScaleX(1);
+                view.getGameView().getDice()[i].setScaleY(1);
+                model.getDice()[i].setHeld(false);
+            }
+
+
+        }
+        if(model.isFinished()){
+            view.getGameView().getA().setHeaderText("Spel gespeeld!");
+            view.getGameView().getA().setContentText(String.format("Uw score was: %d", model.getPlayers().get(0).score.getPoints()));
+            view.getGameView().getA().show();
         }
     }
 
