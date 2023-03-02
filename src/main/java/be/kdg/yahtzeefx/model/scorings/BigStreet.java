@@ -6,11 +6,13 @@ import be.kdg.yahtzeefx.model.Scoring;
 import java.util.Map;
 
 public class BigStreet extends Scoring {
+    //40 punten waard
     @Override
     public int getScore(Dice[] dice) {
         return 40;
     }
 
+    //true als eer vijf opeenvolgende waardes aanwezig zijn
     @Override
     public boolean isValid(Dice[] dice) {
         Map<Integer, Integer> frequenty = getFrequenty(dice);

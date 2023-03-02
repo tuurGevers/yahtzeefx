@@ -9,9 +9,11 @@ public class Yahtzee extends Scoring {
         return 50;
     }
 
+    //true als alle waardes dezelfde zijn
     @Override
     public boolean isValid(Dice[] dice) {
         int value = dice[0].getValue();
+        //als er een waarde niet gelijk is aan de eerste word er fals gereturned
         for (int i = 1; i < dice.length; i++) {
             if (dice[i].getValue() != value) {
                 return false;

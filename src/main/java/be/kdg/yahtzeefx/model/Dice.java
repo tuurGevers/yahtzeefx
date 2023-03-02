@@ -11,7 +11,7 @@ public class Dice {
         this.isHeld = isHeld;
     }
 
-    //roll dice
+    //rol dobbelsteen
     public void roll(){
         this.value = rdm.nextInt(6-1+1) +1;
     }
@@ -20,7 +20,7 @@ public class Dice {
         return value;
     }
 
-    //set isheld true
+    //selecteerd/deselecteerd dobbelsteen
     public void select(){
         isHeld=!isHeld;
     }

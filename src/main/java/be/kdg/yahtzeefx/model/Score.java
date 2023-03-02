@@ -13,9 +13,11 @@ public class Score  {
         this.upperBonus = false;
     }
 
+    //voeg score toe
     public void addScore(int score){
         this.points+=score;
     }
+
     public String getPoints() {
         return String.valueOf(points);
     }

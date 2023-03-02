@@ -39,7 +39,7 @@ public class YahtzeeModel {
         this.finished = false;
     }
 
-    //roll all dice
+    //roll alle stenen
     public void rollDice() {
         for (Dice d : this.dice) {
             if (!d.isHeld()) d.roll();
@@ -47,14 +47,16 @@ public class YahtzeeModel {
         trows++;
     }
 
-    public void nextTurn(){
-        if(turn == players.size()-1){
-            turn =0;
-        }else{
+    //volgende beurt voor als er meerdere spelers zijn
+    public void nextTurn() {
+        if (turn == players.size() - 1) {
+            turn = 0;
+        } else {
             turn++;
         }
     }
 
+    //alle checkers worden opgeroepen en als ze valid zijn worde de scores in een map gereturned
     public Map<String, Integer> scores() {
         Map<String, Integer> score = new HashMap<>();
         if (eye1.isValid(this.dice)) {
@@ -96,13 +98,17 @@ public class YahtzeeModel {
         if (chance.isValid(this.dice)) {
             score.put("13", chance.getScore(this.dice));
         }
-        System.out.println(finished);
         return score;
     }
 
-    public boolean scoreFull(){
-        return players.get(0).score.scores.size() == 13;
+    //checkt of alle scorebladeren vol zijn
+    public boolean scoreFull() {
+        //kijk hoeveel spelers een volle kaart hebben
+        int size = (int) players.stream().filter(p -> p.score.scores.size() == 13).count();
+        //true als alle spelers hun kaarten vol heben
+        return size == players.size();
     }
+
     public Dice[] getDice() {
         return dice;
     }
@@ -111,15 +117,19 @@ public class YahtzeeModel {
         return players;
     }
 
+    //als een speler meer als 63 punten haalt met alleen  het bovenste deel wordt er een bonus van 35 gegeven
     public void bonusCheck(Player player) {
         int upperCount = 0;
         int upperScore = 0;
+        //checkt voor waarde 1..6 of ze zijn ingevuld en telt alle waardes op
         for (int i = 1; i < 7; i++) {
             if (player.score.scores.containsKey(String.valueOf(i))) {
                 upperCount++;
                 upperScore += player.score.scores.get(String.valueOf(i));
             }
         }
+        //als alle waarde zijn ingevuld en de score minstens 63 is en de speler de bonus nog niet heeft gekregen
+        // krijgt de spler een bonus van 3
         if (upperCount == 6 && upperScore >= 63 && !player.score.upperBonus) {
             player.score.upperBonus = true;
             player.score.addScore(35);

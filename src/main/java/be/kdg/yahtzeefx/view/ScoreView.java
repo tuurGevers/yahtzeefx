@@ -4,17 +4,14 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ScoreView extends GridPane {
-    private Label[] eyeLabels = new Label[13];
-    private TextField[] eyeTextFields = new TextField[13];
+    private final Label[] eyeLabels = new Label[13];
+    private final TextField[] eyeTextFields = new TextField[13];
     List<Button> buttons = new ArrayList<>();
     private Label upperBonusLabel, yahtzeeBonusLabel;
     private TextField upperBonusTexfield, yahtzeeBonusTextfield;
@@ -26,12 +23,14 @@ public class ScoreView extends GridPane {
     }
 
     private void initialiseNodes() {
+        //alle textfields en basis buttons worden geïnitializeerd en krijgen een id
         for (int i = 0; i < eyeTextFields.length; i++) {
             eyeTextFields[i] = new TextField("");
             eyeTextFields[i].setId(String.valueOf(i));
             buttons.add(new Button("add"));
             buttons.get(i).setId(String.valueOf(i));
         }
+        //labels worden geïntialiseerd
         for (int j = 0; j < 6; j++) {
             eyeLabels[j] = new Label(String.format("%d", j + 1));
         }
@@ -42,6 +41,8 @@ public class ScoreView extends GridPane {
         eyeLabels[10] = new Label("large straight");
         eyeLabels[11] = new Label("yahtzee");
         eyeLabels[12] = new Label("chance");
+
+        //bonussen worden geïnitialiseerd
         upperBonusLabel = new Label("upper bonus");
         yahtzeeBonusLabel = new Label("yahtzee bonus");
         upperBonusTexfield = new TextField("");
@@ -52,6 +53,7 @@ public class ScoreView extends GridPane {
     }
 
     private void layoutNodes() {
+        //layout
         for (int i = 0; i < 6; i++) {
             this.add(eyeLabels[i], 0, i);
             this.add(eyeTextFields[i], 1, i);

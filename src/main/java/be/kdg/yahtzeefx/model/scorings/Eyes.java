@@ -9,7 +9,7 @@ public class Eyes extends Scoring {
     public Eyes(int eye) {
         this.eye = eye;
     }
-
+    //waarde oog * aantal keer oog
     @Override
     public int getScore(Dice[] dice) {
         int count = 0;
@@ -21,6 +21,7 @@ public class Eyes extends Scoring {
         return count*this.eye;
     }
 
+    //altijd mogelijk
     @Override
     public boolean isValid(Dice[] dice){
         return true;
