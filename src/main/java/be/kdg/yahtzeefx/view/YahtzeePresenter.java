@@ -114,6 +114,9 @@ public class YahtzeePresenter {
     }
 
     private void updateView() {
+        //update value to current round
+        view.getGameView().getRounds().setText(String.format("round: %s/13", model.getRound()));
+
         //update ui naar actuele speler
         view.getGameView().getCurrentPlayer().setText(String.format("current player: %s", model.currentPlayer().getName()));
 
@@ -152,7 +155,7 @@ public class YahtzeePresenter {
                 String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
                 if (scores.containsKey(key) && !scoreCard.containsKey(key)) {
                     field.setText(Integer.toString(scores.get(key)));
-                } else if(!scoreCard.containsKey(key)) {
+                } else if (!scoreCard.containsKey(key)) {
                     field.setText("0");
                 }
 

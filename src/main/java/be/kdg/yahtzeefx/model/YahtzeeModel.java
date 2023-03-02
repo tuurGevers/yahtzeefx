@@ -2,10 +2,8 @@ package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class YahtzeeModel {
     private Dice[] dice;
@@ -27,7 +25,7 @@ public class YahtzeeModel {
     Yahtzee yahtzee = new Yahtzee();
     Chance chance = new Chance();
     private boolean finished;
-
+    private int round = 1;
     public YahtzeeModel(List<Player> players) {
         this.dice = new Dice[5];
         for (int i = 0; i < 5; i++) {
@@ -51,6 +49,7 @@ public class YahtzeeModel {
     public void nextTurn() {
         if (turn == players.size() - 1) {
             turn = 0;
+            round++;
         } else {
             turn++;
         }
@@ -103,10 +102,7 @@ public class YahtzeeModel {
 
     //checkt of alle scorebladeren vol zijn
     public boolean scoreFull() {
-        //kijk hoeveel spelers een volle kaart hebben
-        int size = (int) players.stream().filter(p -> p.score.scores.size() == 13).count();
-        //true als alle spelers hun kaarten vol heben
-        return size == players.size();
+        return this.round == 13;
     }
 
     public Dice[] getDice() {
@@ -152,5 +148,9 @@ public class YahtzeeModel {
 
     public Player currentPlayer() {
         return players.get(turn);
+    }
+
+    public int getRound() {
+        return round;
     }
 }

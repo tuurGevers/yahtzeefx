@@ -15,6 +15,7 @@ public class GameView extends GridPane {
     private Label score;
     private Alert a;
     private Label currentPlayer;
+    private Label rounds;
 
     public GameView() {
         this.initialiseNodes();
@@ -34,6 +35,7 @@ public class GameView extends GridPane {
         score = new Label("score: 0");
         a = new Alert(Alert.AlertType.INFORMATION);
         currentPlayer = new Label("current player: ");
+        rounds = new Label("0/13");
     }
 
     private void layoutNodes() {
@@ -47,6 +49,7 @@ public class GameView extends GridPane {
         this.add(trowCount, 0, 1);
         this.add(currentPlayer, 1, 1, 3, 1);
         this.add(score, 0, 2);
+        this.add(rounds, 3, 1);
 
         //basis styling
         this.setHgap(10);
@@ -77,5 +80,9 @@ public class GameView extends GridPane {
 
     Label getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    Label getRounds() {
+        return rounds;
     }
 }
