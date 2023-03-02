@@ -16,8 +16,8 @@ public class Score  {
     public void addScore(int score){
         this.points+=score;
     }
-    public int getPoints() {
-        return points;
+    public String getPoints() {
+        return String.valueOf(points);
     }
 
     public void setPoints(int points) {

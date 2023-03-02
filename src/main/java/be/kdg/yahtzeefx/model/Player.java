@@ -13,8 +13,9 @@ public class Player {
         this.score = score;
     }
 
-
-
+    public String getName() {
+        return name;
+    }
 
     //add the selected score to the players score
     public void addScore(int score){

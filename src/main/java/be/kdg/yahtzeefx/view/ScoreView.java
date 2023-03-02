@@ -8,10 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ScoreView extends GridPane {
     private Label[] eyeLabels = new Label[13];
     private TextField[] eyeTextFields = new TextField[13];
-    private Button[] buttons = new Button[13];
+    List<Button> buttons = new ArrayList<>();
     private Label upperBonusLabel, yahtzeeBonusLabel;
     private TextField upperBonusTexfield, yahtzeeBonusTextfield;
     private Button yahtzeeBonusButton;
@@ -25,9 +29,8 @@ public class ScoreView extends GridPane {
         for (int i = 0; i < eyeTextFields.length; i++) {
             eyeTextFields[i] = new TextField("");
             eyeTextFields[i].setId(String.valueOf(i));
-            buttons[i] = new Button("add");
-            buttons[i].setId(String.valueOf(i));
-
+            buttons.add(new Button("add"));
+            buttons.get(i).setId(String.valueOf(i));
         }
         for (int j = 0; j < 6; j++) {
             eyeLabels[j] = new Label(String.format("%d", j + 1));
@@ -44,6 +47,8 @@ public class ScoreView extends GridPane {
         upperBonusTexfield = new TextField("");
         yahtzeeBonusTextfield = new TextField("");
         yahtzeeBonusButton = new Button("add");
+        yahtzeeBonusButton.setId("13");
+        buttons.add(yahtzeeBonusButton);
     }
 
     private void layoutNodes() {
@@ -51,7 +56,7 @@ public class ScoreView extends GridPane {
             this.add(eyeLabels[i], 0, i);
             this.add(eyeTextFields[i], 1, i);
             eyeTextFields[i].setEditable(false);
-            this.add(buttons[i], 2, i);
+            this.add(buttons.get(i), 2, i);
         }
         this.add(upperBonusLabel, 0, 6);
         this.add(upperBonusTexfield, 1, 6);
@@ -60,7 +65,7 @@ public class ScoreView extends GridPane {
             this.add(eyeLabels[i], 0, i + 1);
             this.add(eyeTextFields[i], 1, i + 1);
             eyeTextFields[i].setEditable(false);
-            this.add(buttons[i], 2, i + 1);
+            this.add(buttons.get(i), 2, i + 1);
         }
         this.add(yahtzeeBonusLabel, 0, 14);
         this.add(yahtzeeBonusTextfield, 1, 14);
@@ -75,15 +80,11 @@ public class ScoreView extends GridPane {
 
     }
 
-    public Label[] getEyeLabels() {
-        return eyeLabels;
-    }
-
     public TextField[] getEyeTextFields() {
         return eyeTextFields;
     }
 
-    public Button[] getButtons() {
+    public List<Button> getButtons() {
         return buttons;
     }
 

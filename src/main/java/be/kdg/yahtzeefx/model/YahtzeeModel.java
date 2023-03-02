@@ -10,6 +10,7 @@ import java.util.Map;
 public class YahtzeeModel {
     private Dice[] dice;
     public int trows = 0;
+    private int turn = 0;
     private List<Player> players;
     //checkers
     Eyes eye1 = new Eyes(1);
@@ -34,6 +35,7 @@ public class YahtzeeModel {
         }
         this.players = new ArrayList<>();
         this.players.addAll(players);
+        System.out.println(players);
         this.finished = false;
     }
 
@@ -43,6 +45,14 @@ public class YahtzeeModel {
             if (!d.isHeld()) d.roll();
         }
         trows++;
+    }
+
+    public void nextTurn(){
+        if(turn == players.size()-1){
+            turn =0;
+        }else{
+            turn++;
+        }
     }
 
     public Map<String, Integer> scores() {
@@ -128,5 +138,9 @@ public class YahtzeeModel {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public Player currentPlayer() {
+        return players.get(turn);
     }
 }
