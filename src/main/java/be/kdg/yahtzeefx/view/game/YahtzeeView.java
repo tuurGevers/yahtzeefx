@@ -1,4 +1,4 @@
-package be.kdg.yahtzeefx.view;
+package be.kdg.yahtzeefx.view.game;
 
 import javafx.scene.layout.*;
 

@@ -3,8 +3,10 @@ package be.kdg.yahtzeefx;
 import be.kdg.yahtzeefx.model.Player;
 import be.kdg.yahtzeefx.model.Score;
 import be.kdg.yahtzeefx.model.YahtzeeModel;
-import be.kdg.yahtzeefx.view.YahtzeePresenter;
-import be.kdg.yahtzeefx.view.YahtzeeView;
+import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
+import be.kdg.yahtzeefx.view.game.YahtzeeView;
+import be.kdg.yahtzeefx.view.start.StartPresenter;
+import be.kdg.yahtzeefx.view.start.StartView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,33 +17,30 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         //players aanmaken
-        Player player1 = new Player(0, "tuur", new Score());
-        Player player2 = new Player(0, "john doe", new Score());
-        Player player3 = new Player(0, "plater 3", new Score());
-        Player player4 = new Player(0, "plater 4", new Score());
+        Player player1 = new Player(0, "player 1", new Score());
+
 
         //lijst van players maken
         ArrayList<Player> players = new ArrayList();
         players.add(player1);
-        players.add(player2);
-        //players.add(player3);
-        //players.add(player4);
 
         //mvp
         YahtzeeModel model =
                 new YahtzeeModel(players);
-        YahtzeeView view =
-                new YahtzeeView();
-        YahtzeePresenter presenter =
-                new YahtzeePresenter(model, view);
-
+        StartView view =
+                new StartView();
+        YahtzeeView gameView = new YahtzeeView();
+        StartPresenter presenter =
+                new StartPresenter(view, gameView, model);
+        YahtzeePresenter gamePresenter =
+                new YahtzeePresenter(model, gameView);
 
         primaryStage.setScene(new Scene(view));
 
         //titel
         primaryStage.setTitle("yahtzee");
 
-        presenter.addWindowEventHandlers();
+        //presenter.addWindowEventHandlers();
 
         //window grote
         primaryStage.setWidth(750);
@@ -50,6 +49,7 @@ public class Main extends Application {
 
         primaryStage.show();
     }
+
     public static void main(String[] args) {
         Application.launch(args);
     }

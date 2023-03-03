@@ -10,6 +10,9 @@ public class YahtzeeModel {
     public int trows = 0;
     private int turn = 0;
     private List<Player> players;
+    private boolean finished;
+    private int round = 1;
+    private Modes mode;
     //checkers
     Eyes eye1 = new Eyes(1);
     Eyes eye2 = new Eyes(2);
@@ -24,8 +27,7 @@ public class YahtzeeModel {
     BigStreet bigStreet = new BigStreet();
     Yahtzee yahtzee = new Yahtzee();
     Chance chance = new Chance();
-    private boolean finished;
-    private int round = 1;
+
     public YahtzeeModel(List<Player> players) {
         this.dice = new Dice[5];
         for (int i = 0; i < 5; i++) {
@@ -33,8 +35,9 @@ public class YahtzeeModel {
         }
         this.players = new ArrayList<>();
         this.players.addAll(players);
-        System.out.println(players);
         this.finished = false;
+        this.mode = Modes.SINGLE;
+
     }
 
     //roll alle stenen
@@ -113,7 +116,7 @@ public class YahtzeeModel {
         return players;
     }
 
-    //als een speler meer als 63 punten haalt met alleen  het bovenste deel wordt er een bonus van 35 gegeven
+    //als een speler meer als 63 punten haalt met alleen het bovenste deel wordt er een bonus van 35 gegeven
     public void bonusCheck(Player player) {
         int upperCount = 0;
         int upperScore = 0;
@@ -152,5 +155,17 @@ public class YahtzeeModel {
 
     public int getRound() {
         return round;
+    }
+
+    public void setPlayer(int index, Player player){
+        this.players.set(index,player);
+    }
+
+    public Modes getMode() {
+        return mode;
+    }
+
+    public void setMode(Modes mode) {
+        this.mode = mode;
     }
 }

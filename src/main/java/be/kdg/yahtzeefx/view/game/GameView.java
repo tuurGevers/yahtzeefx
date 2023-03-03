@@ -1,4 +1,4 @@
-package be.kdg.yahtzeefx.view;
+package be.kdg.yahtzeefx.view.game;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;

@@ -1,6 +1,8 @@
-package be.kdg.yahtzeefx.view;
+package be.kdg.yahtzeefx.view.game;
 
 import be.kdg.yahtzeefx.model.Dice;
+import be.kdg.yahtzeefx.model.FileException;
+import be.kdg.yahtzeefx.model.Log;
 import be.kdg.yahtzeefx.model.YahtzeeModel;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -12,14 +14,18 @@ import java.util.Map;
 public class YahtzeePresenter {
     private YahtzeeModel model;
     private YahtzeeView view;
+    private boolean selected;
+    private Log logger;
 
     public YahtzeePresenter(
             YahtzeeModel model,
             YahtzeeView view) {
         this.model = model;
         this.view = view;
+        selected = false;
         this.addEventHandlers();
         this.updateView();
+        this.logger = new Log(model);
 
     }
 
@@ -27,7 +33,7 @@ public class YahtzeePresenter {
         //event handler voor gooi knop
         view.getGameView().getTrow().setOnAction(
                 event -> {
-                    if (model.trows != 3) {
+                    if (!selected && model.trows < 3) {
                         updateView();
                     }
                 }
@@ -55,31 +61,34 @@ public class YahtzeePresenter {
         for (Button button : view.getScoreView().getButtons()) {
             button.setOnAction(
                     Event -> {
-                        //checl of de worpen voltooid zijn
-                        if (model.trows == 3) {
-                            //map van scores
-                            Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
-                            Map<String, Integer> scores = model.scores();
 
-                            //check of de speler de waarde bij de button nog niet heeft gekozen
-                            if (!scoreCard.containsKey(String.valueOf(Integer.parseInt(button.getId()) + 1))) {
-                                //de waarde wordt toegevoegd aan de scorekaart van de speler
-                                scoreCard.put(String.valueOf(Integer.parseInt(button.getId()) + 1), scores.get(String.valueOf(Integer.parseInt(button.getId()) + 1)));
-                                model.currentPlayer().score.addScore(scores.getOrDefault(String.valueOf(Integer.parseInt(button.getId()) + 1), 0));
+                        //map van scores
+                        Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
+                        Map<String, Integer> scores = model.scores();
 
-                                //ui update
-                                view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
-                                button.setStyle("-fx-background-color: red;");
-                            }
-                            //check of de upperbous voltooid is en pas ui aan als het zo is
-                            model.bonusCheck(model.currentPlayer());
-                            if (model.currentPlayer().score.upperBonus) {
-                                view.getScoreView().getUpperBonusTexfield().setText("+35");
-                            }
-                            //einde van de beurt
-                            endTurn();
-
+                        //check of de speler de waarde bij de button nog niet heeft gekozen
+                        if (!scoreCard.containsKey(String.valueOf(Integer.parseInt(button.getId()) + 1)) && !selected) {
+                            //de waarde wordt toegevoegd aan de scorekaart van de speler
+                            scoreCard.put(String.valueOf(Integer.parseInt(button.getId()) + 1), scores.get(String.valueOf(Integer.parseInt(button.getId()) + 1)));
+                            model.currentPlayer().score.addScore(scores.getOrDefault(String.valueOf(Integer.parseInt(button.getId()) + 1), 0));
+                            this.selected = true;
+                            //ui update
+                            view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
+                            button.setStyle("-fx-background-color: red;");
                         }
+                        //check of de upperbous voltooid is en pas ui aan als het zo is
+                        model.bonusCheck(model.currentPlayer());
+                        if (model.currentPlayer().score.upperBonus) {
+                            view.getScoreView().getUpperBonusTexfield().setText("+35");
+                        }
+                        //einde van de beurt
+                        try {
+                            logger.saveGame();
+                        } catch (FileException e) {
+                            e.printStackTrace();
+                        }
+                        endTurn();
+
 
                     }
             );
@@ -99,6 +108,11 @@ public class YahtzeePresenter {
                             }
                         }
                         //einde beurt
+                        try {
+                            logger.saveGame();
+                        } catch (FileException e) {
+                            e.printStackTrace();
+                        }
                         endTurn();
                     }
 
@@ -111,9 +125,21 @@ public class YahtzeePresenter {
         model.setFinished();
         model.trows = 0;
         model.nextTurn();
+        this.selected = false;
+        for (int i = 0; i < 5; i++) {
+            resetScale(view.getGameView().getDice()[i]);
+            model.getDice()[i].setHeld(false);
+        }
     }
 
     private void updateView() {
+        if (model.trows == 1) {
+            resetField();
+        }
+
+        //update de score naar die van de huidige player
+        view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
+
         //update value to current round
         view.getGameView().getRounds().setText(String.format("round: %s/13", model.getRound()));
 
@@ -137,46 +163,39 @@ public class YahtzeePresenter {
         view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
 
         //als beurten om zijn
-        if (model.trows == 3) {
-            //krijg actuele scores
-            Map<String, Integer> scores = model.scores();
-            Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
+        //krijg actuele scores
+        Map<String, Integer> scores = model.scores();
+        Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
 
-            //alle buttons die mogelijke waardes hebben worden groen
-            for (Button button : view.getScoreView().getButtons()) {
-                String key = String.valueOf(Integer.parseInt(button.getId()) + 1);
-                if (scores.containsKey(key) && scores.get(key) != 0 && !scoreCard.containsKey(key)) {
-                    button.setStyle("-fx-background-color: green");
-                }
-            }
-
-            //textfoielden worden geupdate naar scores
-            for (TextField field : view.getScoreView().getEyeTextFields()) {
-                String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
-                if (scores.containsKey(key) && !scoreCard.containsKey(key)) {
-                    field.setText(Integer.toString(scores.get(key)));
-                } else if (!scoreCard.containsKey(key)) {
-                    field.setText("0");
-                }
+        //alle buttons die mogelijke waardes hebben worden groen
+        for (Button button : view.getScoreView().getButtons()) {
+            String key = String.valueOf(Integer.parseInt(button.getId()) + 1);
+            if (scores.containsKey(key) && scores.get(key) != 0 && !scoreCard.containsKey(key)) {
+                button.setStyle("-fx-background-color: green");
+            } else if (!scoreCard.containsKey(key)) {
+                button.setStyle("-fx-background-color: grey");
 
             }
-
-            //als er een bonus yahtzee is wordt +100 weergegeven
-            if (model.getYahtzee().isValid(model.getDice()) && scoreCard.containsKey("12")) {
-                view.getScoreView().getYahtzeeBonusTextfield().setText("+100");
-            } else {
-                view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
-            }
-
-            //reset stenen
-            for (int i = 0; i < 5; i++) {
-                resetScale(view.getGameView().getDice()[i]);
-                model.getDice()[i].setHeld(false);
-            }
-            //als het de eerste worp is wordt het vel gerest
-        } else if (model.trows == 1) {
-            resetField();
         }
+
+        //textfielden worden geupdate naar scores
+        for (TextField field : view.getScoreView().getEyeTextFields()) {
+            String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
+            if (scores.containsKey(key) && !scoreCard.containsKey(key)) {
+                field.setText(Integer.toString(scores.get(key)));
+            } else if (!scoreCard.containsKey(key)) {
+                field.setText("0");
+            }
+
+        }
+
+        //als er een bonus yahtzee is wordt +100 weergegeven
+        if (model.getYahtzee().isValid(model.getDice()) && scoreCard.containsKey("12")) {
+            view.getScoreView().getYahtzeeBonusTextfield().setText("+100");
+        } else {
+            view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
+        }
+
         //als het spel gedaan is wordt er een alert getoond
         if (model.isFinished()) {
             view.getGameView().getA().setHeaderText("Spel gespeeld!");
@@ -188,9 +207,6 @@ public class YahtzeePresenter {
     private void resetField() {
         //haal scorekaart op
         Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
-
-        //update de score naar die van de huidige player
-        view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
 
         //stenen worden nog is gerest voor als speler dobbelsteen aanklinkt voor volgende beurt
         int i = 0;
