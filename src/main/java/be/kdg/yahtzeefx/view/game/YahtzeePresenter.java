@@ -1,14 +1,12 @@
 package be.kdg.yahtzeefx.view.game;
 
-import be.kdg.yahtzeefx.model.Dice;
-import be.kdg.yahtzeefx.model.FileException;
-import be.kdg.yahtzeefx.model.Log;
-import be.kdg.yahtzeefx.model.YahtzeeModel;
+import be.kdg.yahtzeefx.model.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class YahtzeePresenter {
@@ -19,7 +17,7 @@ public class YahtzeePresenter {
 
     public YahtzeePresenter(
             YahtzeeModel model,
-            YahtzeeView view) {
+            YahtzeeView view) throws IOException {
         this.model = model;
         this.view = view;
         selected = false;
@@ -34,7 +32,11 @@ public class YahtzeePresenter {
         view.getGameView().getTrow().setOnAction(
                 event -> {
                     if (!selected && model.trows < 3) {
-                        updateView();
+                        try {
+                            updateView();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
@@ -87,7 +89,11 @@ public class YahtzeePresenter {
                         } catch (FileException e) {
                             e.printStackTrace();
                         }
-                        endTurn();
+                        try {
+                            endTurn();
+                        } catch (FileException e) {
+                            e.printStackTrace();
+                        }
 
 
                     }
@@ -113,7 +119,11 @@ public class YahtzeePresenter {
                         } catch (FileException e) {
                             e.printStackTrace();
                         }
-                        endTurn();
+                        try {
+                            endTurn();
+                        } catch (FileException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -121,7 +131,7 @@ public class YahtzeePresenter {
 
     }
 
-    private void endTurn() {
+    private void endTurn() throws FileException {
         model.setFinished();
         model.trows = 0;
         model.nextTurn();
@@ -132,7 +142,7 @@ public class YahtzeePresenter {
         }
     }
 
-    private void updateView() {
+    private void updateView() throws IOException {
         if (model.trows == 1) {
             resetField();
         }
@@ -195,13 +205,21 @@ public class YahtzeePresenter {
         } else {
             view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
         }
-
         //als het spel gedaan is wordt er een alert getoond
-        if (model.isFinished()) {
+        if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
             view.getGameView().getA().setHeaderText("Spel gespeeld!");
             view.getGameView().getA().setContentText(String.format("Uw score was: %s", model.currentPlayer().score.getPoints()));
             view.getGameView().getA().show();
+        }else if(model.isFinished() && model.getTournamentRound() == 5){
+            view.getGameView().getA().setHeaderText("Spel gespeeld!");
+            view.getGameView().getA().setContentText(model.getLog().getWinner());
+            view.getGameView().getA().show();
+        }else if(model.isFinished()){
+            model.reset();
+            resetField();
         }
+
+
     }
 
     private void resetField() {
@@ -219,7 +237,6 @@ public class YahtzeePresenter {
         for (TextField field : view.getScoreView().getEyeTextFields()) {
             String id = String.valueOf(Integer.parseInt(field.getId()) + 1);
             if (scoreCard.containsKey(id)) {
-                System.out.println(scoreCard);
                 if (scoreCard.containsKey(id)) {
                     field.setText(String.valueOf(scoreCard.get(id)));
                 }

@@ -2,8 +2,10 @@ package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class YahtzeeModel {
     private Dice[] dice;
@@ -13,6 +15,8 @@ public class YahtzeeModel {
     private boolean finished;
     private int round = 1;
     private Modes mode;
+    private Log log;
+    private int tournamentRound;
     //checkers
     Eyes eye1 = new Eyes(1);
     Eyes eye2 = new Eyes(2);
@@ -37,7 +41,8 @@ public class YahtzeeModel {
         this.players.addAll(players);
         this.finished = false;
         this.mode = Modes.SINGLE;
-
+        this.log = new Log(this);
+        this.tournamentRound = 1;
     }
 
     //roll alle stenen
@@ -105,7 +110,7 @@ public class YahtzeeModel {
 
     //checkt of alle scorebladeren vol zijn
     public boolean scoreFull() {
-        return this.round == 13;
+        return this.round == 13 && turn == players.size() - 1;
     }
 
     public Dice[] getDice() {
@@ -132,17 +137,20 @@ public class YahtzeeModel {
         if (upperCount == 6 && upperScore >= 63 && !player.score.upperBonus) {
             player.score.upperBonus = true;
             player.score.addScore(35);
-            System.out.println("upper bonus");
 
         }
     }
+
 
     public Yahtzee getYahtzee() {
         return yahtzee;
     }
 
-    public void setFinished() {
+    public void setFinished() throws FileException {
         this.finished = scoreFull();
+        if (this.finished) {
+            log.saveRound();
+        }
     }
 
     public boolean isFinished() {
@@ -157,8 +165,8 @@ public class YahtzeeModel {
         return round;
     }
 
-    public void setPlayer(int index, Player player){
-        this.players.set(index,player);
+    public void setPlayer(int index, Player player) {
+        this.players.set(index, player);
     }
 
     public Modes getMode() {
@@ -167,5 +175,24 @@ public class YahtzeeModel {
 
     public void setMode(Modes mode) {
         this.mode = mode;
+    }
+
+    public Log getLog() {
+        return log;
+    }
+
+    public void reset() {
+        for (Player p:players){
+            p.score = new Score();
+        }
+        this.trows = 0;
+        this.turn = 0;
+        this.round = 1;
+        this.finished = false;
+        this.tournamentRound++;
+    }
+
+    public int getTournamentRound() {
+        return tournamentRound;
     }
 }

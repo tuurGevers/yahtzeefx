@@ -7,6 +7,8 @@ import be.kdg.yahtzeefx.model.YahtzeeModel;
 import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
 
+import java.io.IOException;
+
 public class StartPresenter {
     private StartView startView;
     private YahtzeeView gameView;
@@ -30,8 +32,8 @@ public class StartPresenter {
         startView.getMultiplayer().setOnAction(Event -> {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
 
-            for(int i =1; i < startView.getSpinner(); i++){
-                model.getPlayers().add(new Player(0, String.format("player %d", i+1), new Score()));
+            for (int i = 1; i < startView.getSpinner(); i++) {
+                model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
             }
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
@@ -39,10 +41,16 @@ public class StartPresenter {
 
         startView.getTournament().setOnAction(Event -> {
             model.setMode(Modes.TOURNAMENT);
+
             model.setPlayer(0, new Player(0, "player 1", new Score()));
 
-            for(int i =1; i < startView.getTournamentSpinner(); i++){
-                model.getPlayers().add(new Player(0, String.format("player %d", i+1), new Score()));
+            for (int i = 1; i < startView.getTournamentSpinner(); i++) {
+                model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
+            }
+            try {
+                model.getLog().createRounds();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
