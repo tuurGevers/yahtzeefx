@@ -33,7 +33,11 @@ public class YahtzeePresenter {
                 event -> {
                     if (!selected && model.trows < 3) {
                         try {
+                            //rol dobbelstenen
+                            model.rollDice();
                             updateView();
+                            logger.saveMode();
+                            logger.saveDice();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -46,9 +50,13 @@ public class YahtzeePresenter {
             die.setOnMouseClicked(
                     MouseEvent -> {
                         model.getDice()[Integer.parseInt(die.getId())].select();
+                        try {
+                            logger.saveDice();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         if (model.getDice()[Integer.parseInt(die.getId())].isHeld()) {
-                            die.setScaleY(1.2);
-                            die.setScaleX(1.2);
+                            scale(die);
 
                         } else {
                             resetScale(die);
@@ -83,14 +91,14 @@ public class YahtzeePresenter {
                         if (model.currentPlayer().score.upperBonus) {
                             view.getScoreView().getUpperBonusTexfield().setText("+35");
                         }
-                        //einde van de beurt
                         try {
-                            logger.saveGame();
+                            endTurn();
                         } catch (FileException e) {
                             e.printStackTrace();
                         }
+                        //einde van de beurt
                         try {
-                            endTurn();
+                            logger.saveGame();
                         } catch (FileException e) {
                             e.printStackTrace();
                         }
@@ -142,11 +150,7 @@ public class YahtzeePresenter {
         }
     }
 
-    private void updateView() throws IOException {
-        if (model.trows == 1) {
-            resetField();
-        }
-
+    public void updateView() throws IOException {
         //update de score naar die van de huidige player
         view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
 
@@ -156,9 +160,6 @@ public class YahtzeePresenter {
         //update ui naar actuele speler
         view.getGameView().getCurrentPlayer().setText(String.format("current player: %s", model.currentPlayer().getName()));
 
-        //rol dobbelstenen
-        model.rollDice();
-
         //maak een array met de waardes van de dobbelstenen
         int[] aantallen = new int[5];
         Dice[] dice = model.getDice();
@@ -167,100 +168,88 @@ public class YahtzeePresenter {
             aantallen[i] = dice[i].getValue();
             //update imageview
             view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+            if(dice[i].isHeld()){
+                scale(view.getGameView().getDice()[i]);
+            }
         }
 
         //update trowcount label
         view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
-
-        //als beurten om zijn
-        //krijg actuele scores
-        Map<String, Integer> scores = model.scores();
-        Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
-
-        //alle buttons die mogelijke waardes hebben worden groen
-        for (Button button : view.getScoreView().getButtons()) {
-            String key = String.valueOf(Integer.parseInt(button.getId()) + 1);
-            if (scores.containsKey(key) && scores.get(key) != 0 && !scoreCard.containsKey(key)) {
-                button.setStyle("-fx-background-color: green");
-            } else if (!scoreCard.containsKey(key)) {
-                button.setStyle("-fx-background-color: grey");
-
-            }
+        if(model.getMode() == Modes.TOURNAMENT){
+            view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
         }
 
-        //textfielden worden geupdate naar scores
-        for (TextField field : view.getScoreView().getEyeTextFields()) {
-            String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
-            if (scores.containsKey(key) && !scoreCard.containsKey(key)) {
-                field.setText(Integer.toString(scores.get(key)));
-            } else if (!scoreCard.containsKey(key)) {
-                field.setText("0");
-            }
+        if(model.trows!=0){
+            //als beurten om zijn
+            //krijg actuele scores
+            Map<String, Integer> scores = model.scores();
+            Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
 
-        }
-
-        //als er een bonus yahtzee is wordt +100 weergegeven
-        if (model.getYahtzee().isValid(model.getDice()) && scoreCard.containsKey("12")) {
-            view.getScoreView().getYahtzeeBonusTextfield().setText("+100");
-        } else {
-            view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
-        }
-        //als het spel gedaan is wordt er een alert getoond
-        if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
-            view.getGameView().getA().setHeaderText("Spel gespeeld!");
-            view.getGameView().getA().setContentText(String.format("Uw score was: %s", model.currentPlayer().score.getPoints()));
-            view.getGameView().getA().show();
-        }else if(model.isFinished() && model.getTournamentRound() == 5){
-            view.getGameView().getA().setHeaderText("Spel gespeeld!");
-            view.getGameView().getA().setContentText(model.getLog().getWinner());
-            view.getGameView().getA().show();
-        }else if(model.isFinished()){
-            model.reset();
-            resetField();
-        }
-
-
-    }
-
-    private void resetField() {
-        //haal scorekaart op
-        Map<String, Integer> scoreCard = model.currentPlayer().score.scores;
-
-        //stenen worden nog is gerest voor als speler dobbelsteen aanklinkt voor volgende beurt
-        int i = 0;
-        for (Dice d : model.getDice()) {
-            d.setHeld(false);
-            resetScale(view.getGameView().getDice()[i]);
-            i++;
-        }
-        //textfield wordt geupdate naar de scorekaart van de current player
-        for (TextField field : view.getScoreView().getEyeTextFields()) {
-            String id = String.valueOf(Integer.parseInt(field.getId()) + 1);
-            if (scoreCard.containsKey(id)) {
-                if (scoreCard.containsKey(id)) {
-                    field.setText(String.valueOf(scoreCard.get(id)));
+            //alle buttons die mogelijke waardes hebben worden groen
+            for (Button button : view.getScoreView().getButtons()) {
+                String key = String.valueOf(Integer.parseInt(button.getId()) + 1);
+                if (scores.containsKey(key) && scores.get(key) != 0 && !scoreCard.containsKey(key)) {
+                    button.setStyle("-fx-background-color: green");
+                    button.setDisable(false);
+                } else if (!scoreCard.containsKey(key)) {
+                    button.setStyle("-fx-background-color: grey");
+                    button.setDisable(false);
+                } else {
+                    button.setStyle("-fx-background-color: red;");
+                    button.setDisable(true);
                 }
-            } else {
-                field.setText("0");
             }
-        }
 
-        //buttons worden geupdate naar scorekaart
-        for (Button button : view.getScoreView().getButtons()) {
-            if (scoreCard.containsKey(String.valueOf(Integer.parseInt(button.getId()) + 1))) {
+            //textfielden worden geupdate naar scores
+            for (TextField field : view.getScoreView().getEyeTextFields()) {
+                String key = String.valueOf(Integer.parseInt(field.getId()) + 1);
+                if (scores.containsKey(key) && !scoreCard.containsKey(key)) {
+                    field.setText(Integer.toString(scores.get(key)));
+                } else if (scoreCard.containsKey(key)) {
+                    field.setText(String.valueOf(scoreCard.get(key)));
+                }else{
+                    field.setText("0");
+
+                }
+
+            }
+
+            //als er een bonus yahtzee is wordt +100 weergegeven
+            if (model.getYahtzee().isValid(model.getDice()) && scoreCard.containsKey("12")) {
+                view.getScoreView().getYahtzeeBonusTextfield().setText("+100");
+            } else {
+                view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
+            }
+            //als het spel gedaan is wordt er een alert getoond
+            if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
+                view.getGameView().getA().setHeaderText("Spel gespeeld!");
+                view.getGameView().getA().setContentText(String.format("Uw score was: %s", model.currentPlayer().score.getPoints()));
+                view.getGameView().getA().show();
+            } else if (model.isFinished() && model.getTournamentRound() == 5) {
+                view.getGameView().getA().setHeaderText("Spel gespeeld!");
+                view.getGameView().getA().setContentText(model.getLog().getWinner());
+                view.getGameView().getA().show();
+            } else if (model.isFinished()) {
+                model.reset();
+                updateView();
+            }
+        }else{
+            for (Button button : view.getScoreView().getButtons()) {
                 button.setStyle("-fx-background-color: red;");
                 button.setDisable(true);
-            } else {
-                button.setStyle("-fx-background-color: grey;");
-                button.setDisable(false);
             }
         }
+
     }
 
     //reset scale van stenen
     private void resetScale(ImageView view) {
         view.setScaleY(1);
         view.setScaleX(1);
+    }
+    private void scale(ImageView view) {
+        view.setScaleY(1.2);
+        view.setScaleX(1.2);
     }
 
     public void addWindowEventHandlers() {

@@ -16,6 +16,7 @@ public class GameView extends GridPane {
     private Alert a;
     private Label currentPlayer;
     private Label rounds;
+    private Label tournamentRounds;
 
     public GameView() {
         this.initialiseNodes();
@@ -36,20 +37,22 @@ public class GameView extends GridPane {
         a = new Alert(Alert.AlertType.INFORMATION);
         currentPlayer = new Label("current player: ");
         rounds = new Label("0/13");
+        tournamentRounds= new Label("");
     }
 
     private void layoutNodes() {
         //dobbelstenen en ander ui componenten plaatsen
-        this.add(dice[0], 1, 2);
-        this.add(dice[1], 2, 2);
-        this.add(dice[2], 3, 2);
-        this.add(dice[3], 2, 3);
-        this.add(dice[4], 3, 3);
-        this.add(trow, 2, 4, 2, 1);
+        this.add(dice[0], 1, 3);
+        this.add(dice[1], 2, 3);
+        this.add(dice[2], 3, 3);
+        this.add(dice[3], 2, 4);
+        this.add(dice[4], 3, 4);
+        this.add(trow, 2, 5, 2, 1);
         this.add(trowCount, 0, 1);
         this.add(currentPlayer, 1, 1, 3, 1);
         this.add(score, 0, 2);
         this.add(rounds, 3, 1);
+        this.add(tournamentRounds, 2, 2);
 
         //basis styling
         this.setHgap(10);
@@ -84,5 +87,9 @@ public class GameView extends GridPane {
 
     Label getRounds() {
         return rounds;
+    }
+
+    public Label getTournamentRounds() {
+        return tournamentRounds;
     }
 }

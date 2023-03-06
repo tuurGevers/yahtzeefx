@@ -10,6 +10,8 @@ public class StartView extends GridPane {
     private Button singlePlayer;
     private Button multiplayer;
     private Button tournament;
+    private Button continueGame;
+
     private Spinner<Integer> spinner;
     private Spinner<Integer> tournamentSpinner;
 
@@ -27,6 +29,7 @@ public class StartView extends GridPane {
         tournamentSpinner = new Spinner<>(2, 5, 2, 1);
         multiplayer = new Button("multiplayer");
         tournament = new Button("tournament");
+        continueGame= new Button("continue");
         multiplayerpane = new GridPane();
         tournamentPain = new GridPane();
     }
@@ -40,6 +43,7 @@ public class StartView extends GridPane {
         tournamentPain.add(tournament, 1, 0);
 
         this.add(tournamentPain, 3, 1);
+        this.add(continueGame, 4, 1);
 
         this.setHgap(10);
         this.setVgap(10);
@@ -65,5 +69,9 @@ public class StartView extends GridPane {
 
     public Button getTournament() {
         return tournament;
+    }
+
+    public Button getContinueGame() {
+        return continueGame;
     }
 }

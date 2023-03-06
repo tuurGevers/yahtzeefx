@@ -192,7 +192,31 @@ public class YahtzeeModel {
         this.tournamentRound++;
     }
 
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
     public int getTournamentRound() {
         return tournamentRound;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public void setDice(Dice[] dice) {
+        this.dice = dice;
+    }
+
+    public void setTournamentRound(int tournamentRound) {
+        this.tournamentRound = tournamentRound;
     }
 }

@@ -31,10 +31,11 @@ public class Main extends Application {
         StartView view =
                 new StartView();
         YahtzeeView gameView = new YahtzeeView();
-        StartPresenter presenter =
-                new StartPresenter(view, gameView, model);
         YahtzeePresenter gamePresenter =
                 new YahtzeePresenter(model, gameView);
+        StartPresenter presenter =
+                new StartPresenter(view, gameView, model, gamePresenter);
+
 
         primaryStage.setScene(new Scene(view));
 

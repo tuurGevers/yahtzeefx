@@ -1,9 +1,6 @@
 package be.kdg.yahtzeefx.view.start;
 
-import be.kdg.yahtzeefx.model.Modes;
-import be.kdg.yahtzeefx.model.Player;
-import be.kdg.yahtzeefx.model.Score;
-import be.kdg.yahtzeefx.model.YahtzeeModel;
+import be.kdg.yahtzeefx.model.*;
 import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
 
@@ -13,11 +10,14 @@ public class StartPresenter {
     private StartView startView;
     private YahtzeeView gameView;
     private YahtzeeModel model;
-
-    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model) {
+    private Log logger;
+    private YahtzeePresenter gamePresenter;
+    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter) {
         this.startView = view;
         this.gameView = gameView;
         this.model = model;
+        this.logger = new Log(model);
+        this.gamePresenter = gamePresenter;
         addEventHandlers();
         updateView();
     }
@@ -52,8 +52,28 @@ public class StartPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
+        });
+
+        startView.getContinueGame().setOnAction(Event -> {
+            try {
+                logger.loadSave();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            startView.getScene().setRoot(gameView);
+            gameView.getScene().getWindow().sizeToScene();
+            try {
+                logger.loadDice();
+                gamePresenter.updateView();
+                model.setTournamentRound(logger.loadTournamentRound());
+                gameView.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
