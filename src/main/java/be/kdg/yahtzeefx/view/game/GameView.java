@@ -17,6 +17,8 @@ public class GameView extends GridPane {
     private Label currentPlayer;
     private Label rounds;
     private Label tournamentRounds;
+    private Label computerScore;
+
 
     public GameView() {
         this.initialiseNodes();
@@ -38,6 +40,7 @@ public class GameView extends GridPane {
         currentPlayer = new Label("current player: ");
         rounds = new Label("0/13");
         tournamentRounds= new Label("");
+        computerScore = new Label("computer score: 0");
     }
 
     private void layoutNodes() {
@@ -51,6 +54,8 @@ public class GameView extends GridPane {
         this.add(trowCount, 0, 1);
         this.add(currentPlayer, 1, 1, 3, 1);
         this.add(score, 0, 2);
+        this.add(computerScore, 0, 3);
+
         this.add(rounds, 3, 1);
         this.add(tournamentRounds, 2, 2);
 
@@ -91,5 +96,9 @@ public class GameView extends GridPane {
 
     public Label getTournamentRounds() {
         return tournamentRounds;
+    }
+
+    Label getComputerScore() {
+        return computerScore;
     }
 }

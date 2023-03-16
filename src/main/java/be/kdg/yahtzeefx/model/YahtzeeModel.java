@@ -17,6 +17,7 @@ public class YahtzeeModel {
     private Modes mode;
     private Log log;
     private int tournamentRound;
+    private AI computer;
     //checkers
     Eyes eye1 = new Eyes(1);
     Eyes eye2 = new Eyes(2);
@@ -43,6 +44,7 @@ public class YahtzeeModel {
         this.mode = Modes.SINGLE;
         this.log = new Log(this);
         this.tournamentRound = 1;
+        this.computer = new AI();
     }
 
     //roll alle stenen
@@ -218,5 +220,9 @@ public class YahtzeeModel {
 
     public void setTournamentRound(int tournamentRound) {
         this.tournamentRound = tournamentRound;
+    }
+
+    public AI getComputer() {
+        return computer;
     }
 }

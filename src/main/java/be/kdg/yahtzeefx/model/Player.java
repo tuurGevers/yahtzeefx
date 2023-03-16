@@ -15,4 +15,7 @@ public class Player {
         return name;
     }
 
+    public int getId() {
+        return playerId;
+    }
 }

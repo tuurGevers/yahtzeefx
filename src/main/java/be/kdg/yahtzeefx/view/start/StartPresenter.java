@@ -29,6 +29,16 @@ public class StartPresenter {
             gameView.getScene().getWindow().sizeToScene();
         });
 
+        startView.getAi().setOnAction(Event -> {
+            model.setPlayer(0, new Player(0, "player 1", new Score()));
+            model.getPlayers().add(1, new Player(1, "computer", new Score()));
+            model.setMode(Modes.AI);
+            model.getComputer().setPlayer(model.getPlayers().get(1));
+
+            startView.getScene().setRoot(gameView);
+            gameView.getScene().getWindow().sizeToScene();
+
+        });
         startView.getMultiplayer().setOnAction(Event -> {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
 

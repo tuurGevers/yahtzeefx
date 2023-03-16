@@ -14,17 +14,16 @@ public class YahtzeePresenter {
     private YahtzeeView view;
     private boolean selected;
     private Log logger;
-
     public YahtzeePresenter(
             YahtzeeModel model,
-            YahtzeeView view) throws IOException {
+            YahtzeeView view) {
         this.model = model;
         this.view = view;
-        selected = false;
+
+        this.selected = false;
         this.addEventHandlers();
         this.updateView();
         this.logger = new Log(model);
-
     }
 
     private void addEventHandlers() {
@@ -150,7 +149,17 @@ public class YahtzeePresenter {
         }
     }
 
-    public void updateView() throws IOException {
+    public void updateView() {
+        if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI){
+            model.getComputer().takeTurn(model);
+            view.getGameView().getComputerScore().setText("computer score: " + model.currentPlayer().score.getPoints());
+
+            try {
+                endTurn();
+            } catch (FileException e) {
+                e.printStackTrace();
+            }
+        }
         //update de score naar die van de huidige player
         view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
 
@@ -227,7 +236,12 @@ public class YahtzeePresenter {
                 view.getGameView().getA().show();
             } else if (model.isFinished() && model.getTournamentRound() == 5) {
                 view.getGameView().getA().setHeaderText("Spel gespeeld!");
-                view.getGameView().getA().setContentText(model.getLog().getWinner());
+                try {
+                    view.getGameView().getA().setContentText(model.getLog().getWinner());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 view.getGameView().getA().show();
             } else if (model.isFinished()) {
                 model.reset();
