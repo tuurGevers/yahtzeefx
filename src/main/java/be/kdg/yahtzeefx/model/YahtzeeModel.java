@@ -110,9 +110,52 @@ public class YahtzeeModel {
         return score;
     }
 
+    public Map<String, Integer> allScores() {
+        Map<String, Integer> score = new HashMap<>();
+
+        score.put("1", 0);
+        score.put("2", 0);
+        score.put("3", 0);
+        score.put("4", 0);
+        score.put("5", 0);
+        score.put("6", 0);
+        score.put("7", 0);
+        score.put("8", 0);
+        score.put("9", 0);
+        score.put("10", 0);
+        score.put("11", 0);
+        score.put("12", 0);
+        score.put("13", 0);
+
+        return score;
+    }
+
+    public Player getWinner(){
+        int topScore = 0;
+        Player topPlayer = null;
+        for(Player p: players){
+            int score = Integer.parseInt(p.score.getPoints());
+            if (score>topScore){
+                topScore = score;
+                topPlayer = p;
+            }
+        }
+        return topPlayer;
+    }
+
+    public Player playerFromString(String p){
+        for (Player player:players){
+            if (Objects.equals(player.getName(), p)){
+                return player;
+            }
+        }
+            return null;
+    }
+
+
     //checkt of alle scorebladeren vol zijn
     public boolean scoreFull() {
-        return this.round == 13 && turn == players.size() - 1;
+        return this.round == 4 && turn == players.size() - 1;
     }
 
     public Dice[] getDice() {
@@ -150,7 +193,7 @@ public class YahtzeeModel {
 
     public void setFinished() throws FileException {
         this.finished = scoreFull();
-        if (this.finished) {
+        if (this.finished && this.mode == Modes.TOURNAMENT) {
             log.saveRound();
         }
     }
@@ -184,9 +227,20 @@ public class YahtzeeModel {
     }
 
     public void reset() {
-        for (Player p:players){
+        for (Player p : players) {
             p.score = new Score();
         }
+        this.trows = 0;
+        this.turn = 0;
+        this.round = 1;
+        this.finished = false;
+        this.tournamentRound++;
+    }
+
+    public void restart() {
+        Player player1 = new Player(0, "player 1", new Score());
+        players = new ArrayList();
+        players.add(player1);
         this.trows = 0;
         this.turn = 0;
         this.round = 1;

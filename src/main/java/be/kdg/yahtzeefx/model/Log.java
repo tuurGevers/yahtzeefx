@@ -14,21 +14,24 @@ public class Log {
     Path[] playerPaths;
     Path[] tournamentPaths;
     private Path mode;
+    private Path highScores;
 
     public Log(YahtzeeModel model) {
         this.model = model;
         this.playerPaths = new Path[model.getPlayers().size()];
         this.tournamentPaths = new Path[2];
-        mode = Paths.get("src/main/resources/log/mode.txt");
+        this.mode = Paths.get("src/main/resources/log/mode.txt");
+        this.highScores = Paths.get("src/main/resources/log/highScores.txt");
     }
+
     public void saveMode() throws IOException {
         Files.deleteIfExists(mode);
         Files.createFile(mode);
         Files.write(mode, model.getMode().toString().getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n"+ model.getRound()).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n"+ model.getTurn()).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n"+ model.trows).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n"+ model.getTournamentRound()).getBytes(), StandardOpenOption.APPEND);
+        Files.write(mode, ("\n" + model.getRound()).getBytes(), StandardOpenOption.APPEND);
+        Files.write(mode, ("\n" + model.getTurn()).getBytes(), StandardOpenOption.APPEND);
+        Files.write(mode, ("\n" + model.trows).getBytes(), StandardOpenOption.APPEND);
+        Files.write(mode, ("\n" + model.getTournamentRound()).getBytes(), StandardOpenOption.APPEND);
 
     }
 
@@ -36,7 +39,7 @@ public class Log {
         Path path = Paths.get("src/main/resources/log/dice.txt");
         Files.deleteIfExists(path);
         Files.createFile(path);
-        for (Dice d : model.getDice()){
+        for (Dice d : model.getDice()) {
             Files.write(path, (d.getValue() + ":" + d.isHeld() + "\n").getBytes(), StandardOpenOption.APPEND);
         }
     }
@@ -158,7 +161,7 @@ public class Log {
     private int getTrows() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
-        return  Integer.parseInt(gelezenLijnen.get(3));
+        return Integer.parseInt(gelezenLijnen.get(3));
     }
 
     private Modes getMode() throws IOException {
@@ -186,13 +189,14 @@ public class Log {
                 Charset.defaultCharset());
         int index = 0;
         for (String lijn : gelezenLijnen) {
-                String[] entry = lijn.split(":");
+            String[] entry = lijn.split(":");
             System.out.println(entry[1]);
-                dice[index] = new Dice(Integer.parseInt(entry[0]),Boolean.parseBoolean(entry[1]));
-                model.setDice(dice);
+            dice[index] = new Dice(Integer.parseInt(entry[0]), Boolean.parseBoolean(entry[1]));
+            model.setDice(dice);
             index++;
         }
     }
+
     public int loadTournamentRound() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
@@ -201,5 +205,27 @@ public class Log {
 
     public Path[] getPlayerPaths() {
         return playerPaths;
+    }
+
+    public void addHighScore(String text, int score) {
+        try {
+            Files.write(highScores, (text + ":" + score + "\n").getBytes(), StandardOpenOption.APPEND);
+
+        } catch (IOException e) {
+            System.out.println("couldn't save highscore\n" + e);
+        }
+
+    }
+
+    public Map<String, Integer> getHighScore() throws IOException {
+        List<String> gelezenLijnen = Files.readAllLines(highScores,
+                Charset.defaultCharset());
+        Map<String, Integer> highScores = new HashMap<>();
+        for (String lijn : gelezenLijnen) {
+            String[] entry = lijn.split(":");
+            highScores.put(entry[0], Integer.valueOf(entry[1]));
+        }
+
+        return highScores;
     }
 }

@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -13,7 +14,7 @@ public class GameView extends GridPane {
     private Button trow;
     private Label trowCount;
     private Label score;
-    private Alert a;
+    private TextInputDialog td;
     private Label currentPlayer;
     private Label rounds;
     private Label tournamentRounds;
@@ -36,7 +37,8 @@ public class GameView extends GridPane {
         trow = new Button("gooi");
         trowCount = new Label("trows: 1");
         score = new Label("score: 0");
-        a = new Alert(Alert.AlertType.INFORMATION);
+         td = new TextInputDialog("enter name");
+
         currentPlayer = new Label("current player: ");
         rounds = new Label("0/13");
         tournamentRounds= new Label("");
@@ -82,8 +84,8 @@ public class GameView extends GridPane {
         return dice;
     }
 
-    Alert getA() {
-        return a;
+    TextInputDialog getTd() {
+        return td;
     }
 
     Label getCurrentPlayer() {

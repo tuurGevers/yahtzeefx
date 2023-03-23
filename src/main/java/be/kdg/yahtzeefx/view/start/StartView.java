@@ -13,6 +13,7 @@ public class StartView extends GridPane {
     private Button multiplayer;
     private Button tournament;
     private Button continueGame;
+    private Button leaderBoard;
 
     private Spinner<Integer> spinner;
     private Spinner<Integer> tournamentSpinner;
@@ -28,12 +29,12 @@ public class StartView extends GridPane {
     private void initialiseNodes() {
         singlePlayer = new Button("single player");
         ai = new Button("play against pc");
-
+        leaderBoard = new Button("LeaderBoard");
         spinner = new Spinner<>(2, 5, 2, 1);
         tournamentSpinner = new Spinner<>(2, 5, 2, 1);
         multiplayer = new Button("multiplayer");
         tournament = new Button("tournament");
-        continueGame= new Button("continue");
+        continueGame = new Button("continue");
         multiplayerpane = new GridPane();
         tournamentPain = new GridPane();
     }
@@ -49,7 +50,8 @@ public class StartView extends GridPane {
         tournamentPain.add(tournament, 1, 0);
 
         this.add(tournamentPain, 4, 1);
-        this.add(continueGame, 5, 1);
+        this.add(continueGame, 0, 2);
+        this.add(leaderBoard, 1, 2);
 
         this.setHgap(10);
         this.setVgap(10);
@@ -57,31 +59,35 @@ public class StartView extends GridPane {
 
     }
 
-    public Button getSinglePlayer() {
+    Button getSinglePlayer() {
         return singlePlayer;
     }
 
-    public Button getMultiplayer() {
+    Button getMultiplayer() {
         return multiplayer;
     }
 
-    public int getSpinner() {
+    int getSpinner() {
         return spinner.getValue();
     }
 
-    public int getTournamentSpinner() {
+    int getTournamentSpinner() {
         return tournamentSpinner.getValue();
     }
 
-    public Button getTournament() {
+    Button getTournament() {
         return tournament;
     }
 
-    public Button getContinueGame() {
+    Button getContinueGame() {
         return continueGame;
     }
 
-    public Button getAi() {
+    Button getLeaderBoard() {
+        return leaderBoard;
+    }
+
+    Button getAi() {
         return ai;
     }
 }

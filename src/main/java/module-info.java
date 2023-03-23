@@ -3,6 +3,6 @@ module com.example.yahtzeefx {
     requires javafx.fxml;
 
 
-    opens be.kdg.yahtzeefx to javafx.fxml;
+    opens be.kdg.yahtzeefx to javafx.graphics;
     exports be.kdg.yahtzeefx;
 }

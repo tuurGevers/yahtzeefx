@@ -1,6 +1,8 @@
 package be.kdg.yahtzeefx.view.game;
 
+import be.kdg.yahtzeefx.Main;
 import be.kdg.yahtzeefx.model.*;
+import be.kdg.yahtzeefx.view.start.StartView;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -9,11 +11,14 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.Map;
 
+import static be.kdg.yahtzeefx.Main.getView;
+
 public class YahtzeePresenter {
     private YahtzeeModel model;
     private YahtzeeView view;
     private boolean selected;
     private Log logger;
+
     public YahtzeePresenter(
             YahtzeeModel model,
             YahtzeeView view) {
@@ -48,19 +53,22 @@ public class YahtzeePresenter {
         for (ImageView die : view.getGameView().getDice()) {
             die.setOnMouseClicked(
                     MouseEvent -> {
-                        model.getDice()[Integer.parseInt(die.getId())].select();
-                        try {
-                            logger.saveDice();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (model.getDice()[Integer.parseInt(die.getId())].isHeld()) {
-                            scale(die);
+                        if (model.trows != 0) {
+                            model.getDice()[Integer.parseInt(die.getId())].select();
+                            try {
+                                logger.saveDice();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (model.getDice()[Integer.parseInt(die.getId())].isHeld()) {
+                                scale(die);
 
-                        } else {
-                            resetScale(die);
+                            } else {
+                                resetScale(die);
 
+                            }
                         }
+
                     }
 
             );
@@ -150,7 +158,7 @@ public class YahtzeePresenter {
     }
 
     public void updateView() {
-        if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI){
+        if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI) {
             model.getComputer().takeTurn(model);
             view.getGameView().getComputerScore().setText("computer score: " + model.currentPlayer().score.getPoints());
 
@@ -177,18 +185,18 @@ public class YahtzeePresenter {
             aantallen[i] = dice[i].getValue();
             //update imageview
             view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
-            if(dice[i].isHeld()){
+            if (dice[i].isHeld()) {
                 scale(view.getGameView().getDice()[i]);
             }
         }
 
         //update trowcount label
         view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
-        if(model.getMode() == Modes.TOURNAMENT){
+        if (model.getMode() == Modes.TOURNAMENT) {
             view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
         }
 
-        if(model.trows!=0){
+        if (model.trows != 0) {
             //als beurten om zijn
             //krijg actuele scores
             Map<String, Integer> scores = model.scores();
@@ -216,7 +224,7 @@ public class YahtzeePresenter {
                     field.setText(Integer.toString(scores.get(key)));
                 } else if (scoreCard.containsKey(key)) {
                     field.setText(String.valueOf(scoreCard.get(key)));
-                }else{
+                } else {
                     field.setText("0");
 
                 }
@@ -231,23 +239,28 @@ public class YahtzeePresenter {
             }
             //als het spel gedaan is wordt er een alert getoond
             if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
-                view.getGameView().getA().setHeaderText("Spel gespeeld!");
-                view.getGameView().getA().setContentText(String.format("Uw score was: %s", model.currentPlayer().score.getPoints()));
-                view.getGameView().getA().show();
+                view.getGameView().getTd().setHeaderText("Spel gespeeld!");
+                view.getGameView().getTd().setContentText(String.format("De hoogste score was: %s", model.getWinner().score.getPoints()));
+                view.getGameView().getTd().showAndWait();
+                logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.getWinner().score.getPoints()));
+                model.restart();
+                view.getGameView().getScene().setRoot(getView());
             } else if (model.isFinished() && model.getTournamentRound() == 5) {
-                view.getGameView().getA().setHeaderText("Spel gespeeld!");
+                view.getGameView().getTd().setHeaderText("Spel gespeeld!");
                 try {
-                    view.getGameView().getA().setContentText(model.getLog().getWinner());
+                    view.getGameView().getTd().setContentText(model.getLog().getWinner());
+                    view.getGameView().getTd().showAndWait();
+                    logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.playerFromString(model.getLog().getWinner()).score.getPoints()));
+                    model.restart();
+                    view.getGameView().getScene().setRoot(getView());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                view.getGameView().getA().show();
             } else if (model.isFinished()) {
                 model.reset();
                 updateView();
             }
-        }else{
+        } else {
             for (Button button : view.getScoreView().getButtons()) {
                 button.setStyle("-fx-background-color: red;");
                 button.setDisable(true);
@@ -261,6 +274,7 @@ public class YahtzeePresenter {
         view.setScaleY(1);
         view.setScaleX(1);
     }
+
     private void scale(ImageView view) {
         view.setScaleY(1.2);
         view.setScaleX(1.2);

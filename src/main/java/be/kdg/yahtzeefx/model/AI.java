@@ -7,7 +7,7 @@ public class AI {
     private Player player;
 
     public AI() {
-        this.player =new Player(3, "dummy", new Score());
+        this.player = new Player(3, "dummy", new Score());
     }
 
     private String highestKey(Map<String, Integer> scores) {
@@ -40,7 +40,7 @@ public class AI {
         model.rollDice();
     }
 
-    private void selectHighest(Map<String, Integer> scores) {
+    private void selectHighest(Map<String, Integer> scores, YahtzeeModel model) {
         Map<String, Integer> highestPossible = new HashMap<>();
         for (Map.Entry<String, Integer> entry : scores.entrySet()) {
             if (!this.player.score.scores.containsKey(entry.getKey())) {
@@ -49,18 +49,29 @@ public class AI {
         }
 
         String key = highestKey(highestPossible);
-        this.player.score.scores.put(key, scores.get(key));
-        this.player.score.addScore(scores.get(key));
+        if (key != null) {
+            this.player.score.scores.put(key, scores.get(key));
+            this.player.score.addScore(scores.get(key));
+        } else {
+            Map<String, Integer> emptyScores = model.allScores();
+            for (Map.Entry<String, Integer> entry : emptyScores.entrySet()) {
+                if (!this.player.score.scores.containsKey(entry.getKey())) {
+                    this.player.score.scores.put(entry.getKey(), 0);
+                    break;
+                }
+            }
+
+        }
     }
 
-    public void takeTurn(YahtzeeModel model){
-        for (int i =0; i<3; i++){
+    public void takeTurn(YahtzeeModel model) {
+        for (int i = 0; i < 3; i++) {
             roll(model);
             saveDice(model.getDice());
             System.out.println(model.scores());
         }
 
-        selectHighest(model.scores());
+        selectHighest(model.scores(), model);
     }
 
     public void setPlayer(Player player) {

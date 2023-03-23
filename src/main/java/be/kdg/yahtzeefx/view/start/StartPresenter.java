@@ -3,21 +3,27 @@ package be.kdg.yahtzeefx.view.start;
 import be.kdg.yahtzeefx.model.*;
 import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
+import be.kdg.yahtzeefx.view.highscores.HighScorePresenter;
+import be.kdg.yahtzeefx.view.highscores.HighScoreView;
 
 import java.io.IOException;
 
 public class StartPresenter {
-    private StartView startView;
-    private YahtzeeView gameView;
-    private YahtzeeModel model;
-    private Log logger;
-    private YahtzeePresenter gamePresenter;
-    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter) {
+    private final StartView startView;
+    private final YahtzeeView gameView;
+    private final YahtzeeModel model;
+    private final Log logger;
+    private final YahtzeePresenter gamePresenter;
+    private final HighScoreView highScoreView;
+    private final HighScorePresenter highScorePresenter;
+    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter,HighScoreView highScoreView, HighScorePresenter highScorePresenter) {
         this.startView = view;
         this.gameView = gameView;
         this.model = model;
         this.logger = new Log(model);
         this.gamePresenter = gamePresenter;
+        this.highScoreView = highScoreView;
+        this.highScorePresenter = highScorePresenter;
         addEventHandlers();
         updateView();
     }
@@ -27,6 +33,13 @@ public class StartPresenter {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
+        });
+
+        startView.getLeaderBoard().setOnAction(Event -> {
+            model.setPlayer(0, new Player(0, "player 1", new Score()));
+
+            startView.getScene().setRoot(highScoreView);
+            highScoreView.getScene().getWindow().sizeToScene();
         });
 
         startView.getAi().setOnAction(Event -> {
