@@ -123,7 +123,7 @@ public class Log {
     public void loadSave() throws IOException {
         Path directory = Paths.get("src/main/resources/log/");
         Path[] files = Arrays.stream(Objects.requireNonNull(directory.toFile().listFiles(File::isFile)))
-                .filter(file -> file.getName().startsWith("log"))
+                .filter(file -> file.getName().startsWith("logplayer"))
                 .map(File::toPath)
                 .toArray(Path[]::new);
 
