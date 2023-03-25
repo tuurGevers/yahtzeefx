@@ -2,9 +2,6 @@ package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.*;
 
 public class YahtzeeModel {
@@ -237,6 +234,9 @@ public class YahtzeeModel {
         this.tournamentRound++;
     }
 
+    public int getSelectedCount(){
+        return (int) Arrays.stream(dice).filter(Dice::isHeld).count();
+    }
     public void restart() {
         Player player1 = new Player(0, "player 1", new Score());
         players = new ArrayList();
@@ -246,6 +246,11 @@ public class YahtzeeModel {
         this.round = 1;
         this.finished = false;
         this.tournamentRound++;
+    }
+
+    public void playClick(){
+        Media buzzer = new scene.Media(getClass().getResource("/audio/buzzer.mp3").toExternalForm());
+
     }
 
     public void setPlayers(List<Player> players) {

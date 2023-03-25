@@ -60,7 +60,6 @@ public class GameView extends GridPane {
 
         this.add(rounds, 3, 1);
         this.add(tournamentRounds, 2, 2);
-
         //basis styling
         this.setHgap(10);
         this.setVgap(10);

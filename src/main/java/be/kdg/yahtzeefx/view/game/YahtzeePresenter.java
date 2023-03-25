@@ -55,22 +55,15 @@ public class YahtzeePresenter {
                     MouseEvent -> {
                         if (model.trows != 0) {
                             model.getDice()[Integer.parseInt(die.getId())].select();
+                            selectDice();
                             try {
                                 logger.saveDice();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            if (model.getDice()[Integer.parseInt(die.getId())].isHeld()) {
-                                scale(die);
-
-                            } else {
-                                resetScale(die);
-
-                            }
                         }
 
                     }
-
             );
         }
 
@@ -152,8 +145,8 @@ public class YahtzeePresenter {
         model.nextTurn();
         this.selected = false;
         for (int i = 0; i < 5; i++) {
-            resetScale(view.getGameView().getDice()[i]);
             model.getDice()[i].setHeld(false);
+            selectDice();
         }
     }
 
@@ -185,9 +178,6 @@ public class YahtzeePresenter {
             aantallen[i] = dice[i].getValue();
             //update imageview
             view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
-            if (dice[i].isHeld()) {
-                scale(view.getGameView().getDice()[i]);
-            }
         }
 
         //update trowcount label
@@ -269,15 +259,33 @@ public class YahtzeePresenter {
 
     }
 
-    //reset scale van stenen
-    private void resetScale(ImageView view) {
-        view.setScaleY(1);
-        view.setScaleX(1);
-    }
+    private void selectDice() {
+        //maak een array met de waardes van de dobbelstenen
+        int[] aantallen = new int[5];
+        Dice[] dice = model.getDice();
+        int selectedCount = model.getSelectedCount();
+        for (int i = 0; i < 5; i++) {
+            ImageView selectedDice = view.getSelectedView().getDice()[i];
 
-    private void scale(ImageView view) {
-        view.setScaleY(1.2);
-        view.setScaleX(1.2);
+            aantallen[i] = dice[i].getValue();
+            //update imageview
+            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+            if (dice[i].isHeld()) {
+
+                view.getGameView().getDice()[i].setVisible(false);
+                if (!view.getSelectedView().getChildren().contains(selectedDice)) {
+
+                    view.getSelectedView().add(selectedDice, selectedCount+1, 0);
+
+                    selectedDice.setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+                    view.getScene().getWindow().sizeToScene();
+
+                }
+            } else {
+                view.getSelectedView().getChildren().remove(selectedDice);
+                view.getGameView().getDice()[i].setVisible(true);
+            }
+        }
     }
 
     public void addWindowEventHandlers() {

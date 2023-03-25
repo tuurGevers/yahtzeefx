@@ -3,6 +3,7 @@ package be.kdg.yahtzeefx;
 import be.kdg.yahtzeefx.model.Player;
 import be.kdg.yahtzeefx.model.Score;
 import be.kdg.yahtzeefx.model.YahtzeeModel;
+import be.kdg.yahtzeefx.view.game.SelectedPresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
 import be.kdg.yahtzeefx.view.highscores.HighScorePresenter;
@@ -36,10 +37,10 @@ public class Main extends Application {
         YahtzeePresenter gamePresenter =
                 new YahtzeePresenter(model, gameView);
         HighScoreView highScoreView = new HighScoreView(model);
-        HighScorePresenter highScorePresenter = new HighScorePresenter(highScoreView);
+        HighScorePresenter highScorePresenter = new HighScorePresenter(highScoreView, view);
         StartPresenter presenter =
                 new StartPresenter(view, gameView, model, gamePresenter, highScoreView, highScorePresenter);
-
+        SelectedPresenter selectedPresenter = new SelectedPresenter(model, gameView);
 
         primaryStage.setScene(new Scene(view));
 
