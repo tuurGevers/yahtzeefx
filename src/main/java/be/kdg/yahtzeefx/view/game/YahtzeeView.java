@@ -1,25 +1,29 @@
 package be.kdg.yahtzeefx.view.game;
 
+import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import javafx.scene.layout.*;
 
 public class YahtzeeView extends GridPane {
     private GameView gameView;
     private ScoreView scoreView;
     private SelectedView selectedView;
-    public YahtzeeView(){
-        initialiseNodes();
+    private PreferenceView pView;
+    public YahtzeeView(PreferenceView preferenceView){
+        initialiseNodes(preferenceView);
         layoutNodes();
     }
-    private void initialiseNodes() {
+    private void initialiseNodes(PreferenceView preferenceView) {
+        this.pView = preferenceView;
         gameView = new GameView();
         scoreView = new ScoreView();
         selectedView = new SelectedView();
     }
 
     private void layoutNodes() {
-        this.add(gameView,0,0);
-        this.add(scoreView,1,0);
-        this.add(selectedView,0,1);
+        this.add(pView, 0,0);
+        this.add(gameView,0,1);
+        this.add(scoreView,1,1);
+        this.add(selectedView,0,2);
 
     }
 

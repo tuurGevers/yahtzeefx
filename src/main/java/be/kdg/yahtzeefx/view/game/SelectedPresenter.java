@@ -1,6 +1,7 @@
 package be.kdg.yahtzeefx.view.game;
 
 import be.kdg.yahtzeefx.model.Dice;
+import be.kdg.yahtzeefx.model.MusicPlayer;
 import be.kdg.yahtzeefx.model.YahtzeeModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,10 +11,11 @@ import java.io.IOException;
 public class SelectedPresenter {
     private YahtzeeModel model;
     private YahtzeeView view;
-
-    public SelectedPresenter(YahtzeeModel model, YahtzeeView view) {
+    private MusicPlayer musicPlayer;
+    public SelectedPresenter(YahtzeeModel model, YahtzeeView view, MusicPlayer musicPlayer) {
         this.model = model;
         this.view = view;
+        this.musicPlayer = musicPlayer;
         addEventHandlers();
     }
 
@@ -25,7 +27,7 @@ public class SelectedPresenter {
                         if (model.trows != 0) {
                             model.getDice()[Integer.parseInt(die.getId())].select();
                             updateView();
-                            model.playClick();
+                            musicPlayer.playClick();
                         }
                     }
             );

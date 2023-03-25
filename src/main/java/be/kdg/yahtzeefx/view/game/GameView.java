@@ -1,5 +1,6 @@
 package be.kdg.yahtzeefx.view.game;
 
+import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,7 +20,6 @@ public class GameView extends GridPane {
     private Label rounds;
     private Label tournamentRounds;
     private Label computerScore;
-
 
     public GameView() {
         this.initialiseNodes();
@@ -43,6 +43,7 @@ public class GameView extends GridPane {
         rounds = new Label("0/13");
         tournamentRounds= new Label("");
         computerScore = new Label("computer score: 0");
+
     }
 
     private void layoutNodes() {

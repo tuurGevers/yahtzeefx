@@ -16,7 +16,8 @@ public class StartPresenter {
     private final YahtzeePresenter gamePresenter;
     private final HighScoreView highScoreView;
     private final HighScorePresenter highScorePresenter;
-    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter,HighScoreView highScoreView, HighScorePresenter highScorePresenter) {
+    private MusicPlayer musicPlayer;
+    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter,HighScoreView highScoreView, HighScorePresenter highScorePresenter, MusicPlayer musicPlayer) {
         this.startView = view;
         this.gameView = gameView;
         this.model = model;
@@ -24,13 +25,15 @@ public class StartPresenter {
         this.gamePresenter = gamePresenter;
         this.highScoreView = highScoreView;
         this.highScorePresenter = highScorePresenter;
+        this.musicPlayer = musicPlayer;
+        this.musicPlayer.playMusic();
         addEventHandlers();
         updateView();
     }
 
     private void addEventHandlers() {
         startView.getSinglePlayer().setOnAction(Event -> {
-            model.playClick();
+            musicPlayer.playClick();
 
             model.setPlayer(0, new Player(0, "player 1", new Score()));
             startView.getScene().setRoot(gameView);
@@ -39,7 +42,7 @@ public class StartPresenter {
 
         startView.getLeaderBoard().setOnAction(Event -> {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
-            model.playClick();
+            musicPlayer.playClick();
 
             startView.getScene().setRoot(highScoreView);
             highScoreView.getScene().getWindow().sizeToScene();
@@ -50,7 +53,7 @@ public class StartPresenter {
             model.getPlayers().add(1, new Player(1, "computer", new Score()));
             model.setMode(Modes.AI);
             model.getComputer().setPlayer(model.getPlayers().get(1));
-            model.playClick();
+            musicPlayer.playClick();
 
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
@@ -62,7 +65,7 @@ public class StartPresenter {
             for (int i = 1; i < startView.getSpinner(); i++) {
                 model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
             }
-            model.playClick();
+            musicPlayer.playClick();
 
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
@@ -72,7 +75,7 @@ public class StartPresenter {
             model.setMode(Modes.TOURNAMENT);
 
             model.setPlayer(0, new Player(0, "player 1", new Score()));
-            model.playClick();
+            musicPlayer.playClick();
 
             for (int i = 1; i < startView.getTournamentSpinner(); i++) {
                 model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
@@ -88,7 +91,7 @@ public class StartPresenter {
         });
 
         startView.getContinueGame().setOnAction(Event -> {
-            model.playClick();
+            musicPlayer.playClick();
 
             try {
                 logger.loadSave();

@@ -1,10 +1,12 @@
 package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
+import javafx.concurrent.Task;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.util.*;
+
 public class YahtzeeModel {
     private Dice[] dice;
     public int trows = 0;
@@ -128,12 +130,12 @@ public class YahtzeeModel {
         return score;
     }
 
-    public Player getWinner(){
+    public Player getWinner() {
         int topScore = 0;
         Player topPlayer = null;
-        for(Player p: players){
+        for (Player p : players) {
             int score = Integer.parseInt(p.score.getPoints());
-            if (score>topScore){
+            if (score > topScore) {
                 topScore = score;
                 topPlayer = p;
             }
@@ -141,13 +143,13 @@ public class YahtzeeModel {
         return topPlayer;
     }
 
-    public Player playerFromString(String p){
-        for (Player player:players){
-            if (Objects.equals(player.getName(), p)){
+    public Player playerFromString(String p) {
+        for (Player player : players) {
+            if (Objects.equals(player.getName(), p)) {
                 return player;
             }
         }
-            return null;
+        return null;
     }
 
 
@@ -235,9 +237,10 @@ public class YahtzeeModel {
         this.tournamentRound++;
     }
 
-    public int getSelectedCount(){
+    public int getSelectedCount() {
         return (int) Arrays.stream(dice).filter(Dice::isHeld).count();
     }
+
     public void restart() {
         Player player1 = new Player(0, "player 1", new Score());
         players = new ArrayList();
@@ -247,12 +250,6 @@ public class YahtzeeModel {
         this.round = 1;
         this.finished = false;
         this.tournamentRound++;
-    }
-
-    public void playClick(){
-        Media buttonSound = new Media(getClass().getResource("/sound/ui-click.mp3").toExternalForm());
-        MediaPlayer mediaPlayer = new MediaPlayer(buttonSound);
-        mediaPlayer.play();
     }
 
     public void setPlayers(List<Player> players) {

@@ -1,5 +1,6 @@
 package be.kdg.yahtzeefx;
 
+import be.kdg.yahtzeefx.model.MusicPlayer;
 import be.kdg.yahtzeefx.model.Player;
 import be.kdg.yahtzeefx.model.Score;
 import be.kdg.yahtzeefx.model.YahtzeeModel;
@@ -8,10 +9,14 @@ import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
 import be.kdg.yahtzeefx.view.highscores.HighScorePresenter;
 import be.kdg.yahtzeefx.view.highscores.HighScoreView;
+import be.kdg.yahtzeefx.view.preferences.PreferencePresenter;
+import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import be.kdg.yahtzeefx.view.start.StartPresenter;
 import be.kdg.yahtzeefx.view.start.StartView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,11 +24,13 @@ import java.util.ArrayList;
 
 public class Main extends Application {
     static StartView view;
+
     @Override
     public void start(Stage primaryStage) {
         //players aanmaken
         Player player1 = new Player(0, "player 1", new Score());
 
+        MusicPlayer musicPlayer = new MusicPlayer();
 
         //lijst van players maken
         ArrayList<Player> players = new ArrayList();
@@ -33,15 +40,16 @@ public class Main extends Application {
         YahtzeeModel model =
                 new YahtzeeModel(players);
         view = new StartView();
-        YahtzeeView gameView = new YahtzeeView();
+        PreferenceView preferenceView = new PreferenceView();
+        YahtzeeView gameView = new YahtzeeView(preferenceView);
         YahtzeePresenter gamePresenter =
-                new YahtzeePresenter(model, gameView);
+                new YahtzeePresenter(model, gameView, musicPlayer);
         HighScoreView highScoreView = new HighScoreView(model);
         HighScorePresenter highScorePresenter = new HighScorePresenter(highScoreView, view);
         StartPresenter presenter =
-                new StartPresenter(view, gameView, model, gamePresenter, highScoreView, highScorePresenter);
-        SelectedPresenter selectedPresenter = new SelectedPresenter(model, gameView);
-
+                new StartPresenter(view, gameView, model, gamePresenter, highScoreView, highScorePresenter, musicPlayer);
+        SelectedPresenter selectedPresenter = new SelectedPresenter(model, gameView, musicPlayer);
+        PreferencePresenter preferencePresenter = new PreferencePresenter(model, preferenceView, musicPlayer);
         primaryStage.setScene(new Scene(view));
 
         //titel
@@ -54,10 +62,11 @@ public class Main extends Application {
         primaryStage.setHeight(600);
         primaryStage.centerOnScreen();
 
+
         primaryStage.show();
     }
 
-    public static StartView getView(){
+    public static StartView getView() {
         return view;
     }
 

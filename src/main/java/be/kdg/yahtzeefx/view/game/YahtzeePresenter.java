@@ -18,10 +18,13 @@ public class YahtzeePresenter {
     private YahtzeeView view;
     private boolean selected;
     private Log logger;
+    private MusicPlayer musicPlayer;
+
 
     public YahtzeePresenter(
             YahtzeeModel model,
-            YahtzeeView view) {
+            YahtzeeView view,
+            MusicPlayer musicPlayer) {
         this.model = model;
         this.view = view;
 
@@ -29,6 +32,8 @@ public class YahtzeePresenter {
         this.addEventHandlers();
         this.updateView();
         this.logger = new Log(model);
+        this.musicPlayer = musicPlayer;
+
     }
 
     private void addEventHandlers() {
@@ -42,7 +47,7 @@ public class YahtzeePresenter {
                             updateView();
                             logger.saveMode();
                             logger.saveDice();
-                            model.playClick();
+                            musicPlayer.playClick();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -62,8 +67,7 @@ public class YahtzeePresenter {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            model.playClick();
-
+                            musicPlayer.playClick();
                         }
 
                     }
@@ -106,7 +110,7 @@ public class YahtzeePresenter {
                             e.printStackTrace();
                         }
 
-                        model.playClick();
+                        musicPlayer.playClick();
 
                     }
             );
@@ -279,7 +283,7 @@ public class YahtzeePresenter {
                 view.getGameView().getDice()[i].setVisible(false);
                 if (!view.getSelectedView().getChildren().contains(selectedDice)) {
 
-                    view.getSelectedView().add(selectedDice, selectedCount+1, 0);
+                    view.getSelectedView().add(selectedDice, selectedCount + 1, 0);
 
                     selectedDice.setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
                     view.getScene().getWindow().sizeToScene();
