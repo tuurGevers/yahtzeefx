@@ -1,9 +1,10 @@
 package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.*;
-
 public class YahtzeeModel {
     private Dice[] dice;
     public int trows = 0;
@@ -249,8 +250,9 @@ public class YahtzeeModel {
     }
 
     public void playClick(){
-        Media buzzer = new scene.Media(getClass().getResource("/audio/buzzer.mp3").toExternalForm());
-
+        Media buttonSound = new Media(getClass().getResource("/sound/ui-click.mp3").toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(buttonSound);
+        mediaPlayer.play();
     }
 
     public void setPlayers(List<Player> players) {

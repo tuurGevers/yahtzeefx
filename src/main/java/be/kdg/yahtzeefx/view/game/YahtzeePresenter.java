@@ -42,6 +42,7 @@ public class YahtzeePresenter {
                             updateView();
                             logger.saveMode();
                             logger.saveDice();
+                            model.playClick();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -61,6 +62,8 @@ public class YahtzeePresenter {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            model.playClick();
+
                         }
 
                     }
@@ -103,6 +106,7 @@ public class YahtzeePresenter {
                             e.printStackTrace();
                         }
 
+                        model.playClick();
 
                     }
             );

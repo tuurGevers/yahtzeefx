@@ -25,7 +25,7 @@ public class SelectedPresenter {
                         if (model.trows != 0) {
                             model.getDice()[Integer.parseInt(die.getId())].select();
                             updateView();
-
+                            model.playClick();
                         }
                     }
             );

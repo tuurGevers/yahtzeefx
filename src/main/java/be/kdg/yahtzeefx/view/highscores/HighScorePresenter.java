@@ -19,7 +19,6 @@ public class HighScorePresenter {
                 startView.getScene().getWindow().setWidth(600);
                 startView.getScene().getWindow().setHeight(600);
 
-
             });
     }
 
