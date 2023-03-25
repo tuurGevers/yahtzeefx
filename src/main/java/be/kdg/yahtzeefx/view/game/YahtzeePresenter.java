@@ -169,31 +169,11 @@ public class YahtzeePresenter {
                 e.printStackTrace();
             }
         }
-        //update de score naar die van de huidige player
-        view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
+        updateUI();
+        updateGameUi();
+    }
 
-        //update value to current round
-        view.getGameView().getRounds().setText(String.format("round: %s/13", model.getRound()));
-
-        //update ui naar actuele speler
-        view.getGameView().getCurrentPlayer().setText(String.format("current player: %s", model.currentPlayer().getName()));
-
-        //maak een array met de waardes van de dobbelstenen
-        int[] aantallen = new int[5];
-        Dice[] dice = model.getDice();
-
-        for (int i = 0; i < 5; i++) {
-            aantallen[i] = dice[i].getValue();
-            //update imageview
-            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
-        }
-
-        //update trowcount label
-        view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
-        if (model.getMode() == Modes.TOURNAMENT) {
-            view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
-        }
-
+    private void updateGameUi() {
         if (model.trows != 0) {
             //als beurten om zijn
             //krijg actuele scores
@@ -235,36 +215,67 @@ public class YahtzeePresenter {
             } else {
                 view.getScoreView().getYahtzeeBonusTextfield().setText(String.valueOf(model.currentPlayer().score.scores.getOrDefault("14", 0)));
             }
-            //als het spel gedaan is wordt er een alert getoond
-            if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
-                view.getGameView().getTd().setHeaderText("Spel gespeeld!");
-                view.getGameView().getTd().setContentText(String.format("De hoogste score was: %s", model.getWinner().score.getPoints()));
-                view.getGameView().getTd().showAndWait();
-                logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.getWinner().score.getPoints()));
-                model.restart();
-                view.getGameView().getScene().setRoot(getView());
-            } else if (model.isFinished() && model.getTournamentRound() == 5) {
-                view.getGameView().getTd().setHeaderText("Spel gespeeld!");
-                try {
-                    view.getGameView().getTd().setContentText(model.getLog().getWinner());
-                    view.getGameView().getTd().showAndWait();
-                    logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.playerFromString(model.getLog().getWinner()).score.getPoints()));
-                    model.restart();
-                    view.getGameView().getScene().setRoot(getView());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (model.isFinished()) {
-                model.reset();
-                updateView();
-            }
+
+            endGameCheck();
         } else {
             for (Button button : view.getScoreView().getButtons()) {
                 button.setStyle("-fx-background-color: red;");
                 button.setDisable(true);
             }
         }
+    }
 
+    private void endGameCheck() {
+        //als het spel gedaan is wordt er een alert getoond
+        if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
+            view.getGameView().getTd().setHeaderText("Spel gespeeld!");
+            view.getGameView().getTd().setContentText(String.format("De hoogste score was: %s", model.getWinner().score.getPoints()));
+            view.getGameView().getTd().showAndWait();
+            logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.getWinner().score.getPoints()));
+            model.restart();
+            view.getGameView().getScene().setRoot(getView());
+        } else if (model.isFinished() && model.getTournamentRound() == 5) {
+            view.getGameView().getTd().setHeaderText("Spel gespeeld!");
+            try {
+                view.getGameView().getTd().setContentText(model.getLog().getWinner());
+                view.getGameView().getTd().showAndWait();
+                logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.playerFromString(model.getLog().getWinner()).score.getPoints()));
+                model.restart();
+                view.getGameView().getScene().setRoot(getView());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (model.isFinished()) {
+            model.reset();
+            updateView();
+        }
+    }
+
+    private void updateUI() {
+        //update de score naar die van de huidige player
+        view.getGameView().getScore().setText("score: " + model.currentPlayer().score.getPoints());
+
+        //update value to current round
+        view.getGameView().getRounds().setText(String.format("round: %s/13", model.getRound()));
+
+        //update ui naar actuele speler
+        view.getGameView().getCurrentPlayer().setText(String.format("current player: %s", model.currentPlayer().getName()));
+
+        //maak een array met de waardes van de dobbelstenen
+        int[] aantallen = new int[5];
+        Dice[] dice = model.getDice();
+
+        for (int i = 0; i < 5; i++) {
+            aantallen[i] = dice[i].getValue();
+            //update imageview
+            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+        }
+
+        //update trowcount label
+        view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
+        if (model.getMode() == Modes.TOURNAMENT) {
+            view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
+        }
     }
 
     private void selectDice() {

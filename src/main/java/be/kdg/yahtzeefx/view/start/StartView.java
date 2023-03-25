@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+
 import java.util.Objects;
 
 public class StartView extends GridPane {
@@ -70,8 +71,8 @@ public class StartView extends GridPane {
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         new BackgroundPosition(Side.LEFT, 0.0, false, Side.BOTTOM, 0.0, false),
-                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true,true,true,true)
-                        )));
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, true)
+                )));
 
         for (Node node : this.getChildren()) {
             if (node instanceof Button) {

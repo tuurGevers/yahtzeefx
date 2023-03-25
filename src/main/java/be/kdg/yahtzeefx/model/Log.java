@@ -16,6 +16,10 @@ public class Log {
     private Path mode;
     private Path highScores;
 
+    private void appendFile(Path path, String message) throws IOException {
+        Files.write(path, message.getBytes(), StandardOpenOption.APPEND);
+    }
+
     public Log(YahtzeeModel model) {
         this.model = model;
         this.playerPaths = new Path[model.getPlayers().size()];
@@ -27,11 +31,11 @@ public class Log {
     public void saveMode() throws IOException {
         Files.deleteIfExists(mode);
         Files.createFile(mode);
-        Files.write(mode, model.getMode().toString().getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n" + model.getRound()).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n" + model.getTurn()).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n" + model.trows).getBytes(), StandardOpenOption.APPEND);
-        Files.write(mode, ("\n" + model.getTournamentRound()).getBytes(), StandardOpenOption.APPEND);
+        appendFile(mode, model.getMode().toString());
+        appendFile(mode, "\n" + model.getRound());
+        appendFile(mode, "\n" + model.getTurn());
+        appendFile(mode, "\n" + model.trows);
+        appendFile(mode, "\n" + model.getTournamentRound());
 
     }
 
