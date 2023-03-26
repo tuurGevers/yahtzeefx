@@ -169,6 +169,7 @@ public class YahtzeePresenter {
                 e.printStackTrace();
             }
         }
+        selectDice();
         updateUI();
         updateGameUi();
     }
@@ -283,24 +284,24 @@ public class YahtzeePresenter {
         int[] aantallen = new int[5];
         Dice[] dice = model.getDice();
         int selectedCount = model.getSelectedCount();
+        view.getSelectedView().getChildren().removeAll();
         for (int i = 0; i < 5; i++) {
             ImageView selectedDice = view.getSelectedView().getDice()[i];
-
             aantallen[i] = dice[i].getValue();
             //update imageview
             view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
             if (dice[i].isHeld()) {
-
                 view.getGameView().getDice()[i].setVisible(false);
                 if (!view.getSelectedView().getChildren().contains(selectedDice)) {
 
-                    view.getSelectedView().add(selectedDice, selectedCount + 1, 0);
-
+                    view.getSelectedView().add(selectedDice, i + 1, 0);
+                    selectedDice.setVisible(true);
                     selectedDice.setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
                     view.getScene().getWindow().sizeToScene();
 
                 }
             } else {
+                selectedCount --;
                 view.getSelectedView().getChildren().remove(selectedDice);
                 view.getGameView().getDice()[i].setVisible(true);
             }

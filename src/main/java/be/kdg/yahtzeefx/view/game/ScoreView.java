@@ -76,6 +76,7 @@ public class ScoreView extends GridPane {
         upperBonusTexfield.setEditable(false);
         yahtzeeBonusTextfield.setEditable(false);
 
+        this.setStyle("-fx-background-color: #F2F2F2; -fx-border-color: black; -fx-border-width: 2px;-fx-end-margin: 1em");
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));

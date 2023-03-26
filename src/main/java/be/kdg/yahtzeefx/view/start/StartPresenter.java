@@ -5,6 +5,7 @@ import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
 import be.kdg.yahtzeefx.view.highscores.HighScorePresenter;
 import be.kdg.yahtzeefx.view.highscores.HighScoreView;
+import javafx.geometry.Insets;
 
 import java.io.IOException;
 
@@ -38,6 +39,7 @@ public class StartPresenter {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
+
         });
 
         startView.getLeaderBoard().setOnAction(Event -> {

@@ -39,8 +39,9 @@ public class Main extends Application {
         //mvp
         YahtzeeModel model =
                 new YahtzeeModel(players);
-        view = new StartView();
         PreferenceView preferenceView = new PreferenceView();
+        view = new StartView(preferenceView);
+
         YahtzeeView gameView = new YahtzeeView(preferenceView);
         YahtzeePresenter gamePresenter =
                 new YahtzeePresenter(model, gameView, musicPlayer);

@@ -1,5 +1,6 @@
 package be.kdg.yahtzeefx.view.start;
 
+import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,12 +28,13 @@ public class StartView extends GridPane {
     private GridPane multiplayerpane;
     private GridPane tournamentPain;
 
-    public StartView() {
-        initialiseNodes();
+    private PreferenceView pView;
+    public StartView(PreferenceView pView) {
+        initialiseNodes(pView);
         layoutNodes();
     }
 
-    private void initialiseNodes() {
+    private void initialiseNodes(PreferenceView pView) {
         singlePlayer = new Button("single player");
         ai = new Button("play against pc");
         leaderBoard = new Button("LeaderBoard");
@@ -43,6 +45,8 @@ public class StartView extends GridPane {
         continueGame = new Button("continue");
         multiplayerpane = new GridPane();
         tournamentPain = new GridPane();
+        this.pView = pView;
+
     }
 
     private void layoutNodes() {
@@ -58,7 +62,6 @@ public class StartView extends GridPane {
         this.add(tournamentPain, 1, 4, 2, 1);
         this.add(continueGame, 1, 5, 2, 1);
         this.add(leaderBoard, 1, 6, 2, 1);
-
         this.setAlignment(Pos.CENTER);
         this.setHgap(10);
         this.setVgap(10);
@@ -71,12 +74,14 @@ public class StartView extends GridPane {
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         new BackgroundPosition(Side.LEFT, 0.0, false, Side.BOTTOM, 0.0, false),
-                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, true)
+                        new BackgroundSize(0, 0, false, false, true, true)
                 )));
 
         for (Node node : this.getChildren()) {
             if (node instanceof Button) {
                 ((Button) node).setPrefWidth(Double.MAX_VALUE);
+                ((Button) node).setStyle("-fx-background-color: #BFBFBF; -fx-background-radius: 10; -fx-font-size: 16px; -fx-text-fill: #000000;");
+
             }
         }
 

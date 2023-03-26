@@ -47,7 +47,7 @@ public class SelectedPresenter {
                 view.getGameView().getDice()[i].setVisible(true);
 
                 ImageView selectedDice = view.getSelectedView().getDice()[i];
-                selectedDice.setVisible(false);
+                view.getSelectedView().getChildren().remove(selectedDice);
             }
         }
     }

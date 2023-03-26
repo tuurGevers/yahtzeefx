@@ -42,7 +42,7 @@ public class GameView extends GridPane {
         currentPlayer = new Label("current player: ");
         rounds = new Label("0/13");
         tournamentRounds= new Label("");
-        computerScore = new Label("computer score: 0");
+        computerScore = new Label("");
 
     }
 

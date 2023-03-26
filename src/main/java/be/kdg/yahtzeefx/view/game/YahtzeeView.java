@@ -1,6 +1,7 @@
 package be.kdg.yahtzeefx.view.game;
 
 import be.kdg.yahtzeefx.view.preferences.PreferenceView;
+import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 
 public class YahtzeeView extends GridPane {
@@ -24,6 +25,9 @@ public class YahtzeeView extends GridPane {
         this.add(gameView,0,1);
         this.add(scoreView,1,1);
         this.add(selectedView,0,2);
+        this.setPadding(new Insets(10));
+        this.minWidth(800);
+        this.minHeight(1200);
 
     }
 
