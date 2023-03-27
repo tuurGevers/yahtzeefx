@@ -1,13 +1,15 @@
 package be.kdg.yahtzeefx.model;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AI {
     private Player player;
-
-    public AI() {
-        this.player = new Player(3, "dummy", new Score());
+    private Log logger;
+    public AI(Log logger) {
+        this.player = new Player(3, "computer", new Score());
+        this.logger = logger;
     }
 
     private String highestKey(Map<String, Integer> scores) {
@@ -52,6 +54,7 @@ public class AI {
         if (key != null) {
             this.player.score.scores.put(key, scores.get(key));
             this.player.score.addScore(scores.get(key));
+            System.out.println(key + ":" + scores.get(key));
         } else {
             Map<String, Integer> emptyScores = model.allScores();
             for (Map.Entry<String, Integer> entry : emptyScores.entrySet()) {
@@ -64,17 +67,21 @@ public class AI {
         }
     }
 
-    public void takeTurn(YahtzeeModel model) {
+    public void takeTurn(YahtzeeModel model) throws FileException, IOException {
         for (int i = 0; i < 3; i++) {
             roll(model);
             saveDice(model.getDice());
-            System.out.println(model.scores());
         }
 
         selectHighest(model.scores(), model);
+        this.logger.saveAi();
     }
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

@@ -160,14 +160,15 @@ public class YahtzeePresenter {
 
     public void updateView() {
         if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI) {
-            model.getComputer().takeTurn(model);
-            view.getGameView().getComputerScore().setText("computer score: " + model.currentPlayer().score.getPoints());
 
             try {
+                model.getComputer().takeTurn(model);
                 endTurn();
-            } catch (FileException e) {
+            } catch (FileException | IOException e) {
                 e.printStackTrace();
             }
+            view.getGameView().getComputerScore().setText("computer score: " + model.getComputer().getPlayer().score.getPoints());
+
         }
         selectDice();
         updateUI();
@@ -229,12 +230,16 @@ public class YahtzeePresenter {
     private void endGameCheck() {
         //als het spel gedaan is wordt er een alert getoond
         if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
-            view.getGameView().getTd().setHeaderText("Spel gespeeld!");
-            view.getGameView().getTd().setContentText(String.format("De hoogste score was: %s", model.getWinner().score.getPoints()));
-            view.getGameView().getTd().showAndWait();
-            logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.getWinner().score.getPoints()));
-            model.restart();
-            view.getGameView().getScene().setRoot(getView());
+            if(model.getMode() == Modes.AI){
+                if(model.getWinner() != model.getPlayers().get(1)){
+                    endAlert();
+                }else{
+                    model.restart();
+                    view.getGameView().getScene().setRoot(getView());
+                }
+            }else{
+                endAlert();
+            }
         } else if (model.isFinished() && model.getTournamentRound() == 5) {
             view.getGameView().getTd().setHeaderText("Spel gespeeld!");
             try {
@@ -250,6 +255,15 @@ public class YahtzeePresenter {
             model.reset();
             updateView();
         }
+    }
+
+    private void endAlert() {
+        view.getGameView().getTd().setHeaderText("Spel gespeeld!");
+        view.getGameView().getTd().setContentText(String.format("De hoogste score was: %s", model.getWinner().score.getPoints()));
+        view.getGameView().getTd().showAndWait();
+        logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.getWinner().score.getPoints()));
+        model.restart();
+        view.getGameView().getScene().setRoot(getView());
     }
 
     private void updateUI() {

@@ -44,7 +44,7 @@ public class YahtzeeModel {
         this.mode = Modes.SINGLE;
         this.log = new Log(this);
         this.tournamentRound = 1;
-        this.computer = new AI();
+        this.computer = new AI(this.log);
     }
 
     //roll alle stenen

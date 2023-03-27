@@ -10,3 +10,5 @@ r:47
 topg:67
 zzzzz:45
 zez:18
+tlc:79
+computer:91

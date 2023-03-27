@@ -6,6 +6,7 @@ import be.kdg.yahtzeefx.model.YahtzeeModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SelectedPresenter {

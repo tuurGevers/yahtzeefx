@@ -101,6 +101,19 @@ public class Log {
         }
     }
 
+    public void saveAi() throws IOException {
+        Path path = Paths.get("src/main/resources/log/logcomputer.txt");
+        Files.deleteIfExists(path);
+        Files.createFile(path);
+        Files.write(path, (model.getComputer().getPlayer().getName() + "\n").getBytes());
+        Map<String, Integer> scoreCard = model.getComputer().getPlayer().score.scores;
+        for (String key : scoreCard.keySet()) {
+            String writable = key + ":" + scoreCard.get(key) + "\n";
+            appendFile(path, writable);
+        }
+
+    }
+
     public String getWinner() throws IOException {
         int[] scores = new int[model.getPlayers().size()];
         int maxScore = 0;
@@ -127,6 +140,10 @@ public class Log {
                 .map(File::toPath)
                 .toArray(Path[]::new);
 
+        loadPlayers(files);
+    }
+
+    private void loadPlayers(Path[] files) throws IOException {
         int index = 0;
         List<Player> players = new ArrayList<>();
         for (Path file : files) {
@@ -136,15 +153,12 @@ public class Log {
             index++;
         }
 
-        model.setPlayers(players);
-        model.setRound(getRound());
-        model.setMode(getMode());
-        model.setTurn(getTurn());
-        model.trows = getTrows();
-        System.out.println(getTrows());
+        loadModel(players);
+
 
         for (Player p : model.getPlayers()) {
             Map<String, Integer> scoreCard = new HashMap<>();
+            System.out.println(p.getName());
             Path path = Paths.get("src/main/resources/log/log" + p.getName() + ".txt");
             List<String> gelezenLijnen = Files.readAllLines(path,
                     Charset.defaultCharset());
@@ -162,13 +176,29 @@ public class Log {
         }
     }
 
+
+    public void loadAi() throws IOException {
+        Path[] paths = {Paths.get("src/main/resources/log/logplayer 1.txt"),Paths.get("src/main/resources/log/logcomputer.txt")};
+        loadPlayers(paths);
+        model.getComputer().setPlayer(model.getPlayers().get(1));
+
+    }
+
+    private void loadModel(List<Player> players) throws IOException {
+        model.setPlayers(players);
+        model.setRound(getRound());
+        model.setMode(getMode());
+        model.setTurn(getTurn());
+        model.trows = getTrows();
+    }
+
     private int getTrows() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
         return Integer.parseInt(gelezenLijnen.get(3));
     }
 
-    private Modes getMode() throws IOException {
+    public Modes getMode() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
         return Modes.valueOf(gelezenLijnen.get(0));
@@ -194,7 +224,6 @@ public class Log {
         int index = 0;
         for (String lijn : gelezenLijnen) {
             String[] entry = lijn.split(":");
-            System.out.println(entry[1]);
             dice[index] = new Dice(Integer.parseInt(entry[0]), Boolean.parseBoolean(entry[1]));
             model.setDice(dice);
             index++;

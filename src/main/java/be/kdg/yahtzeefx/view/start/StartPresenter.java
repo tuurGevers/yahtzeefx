@@ -18,7 +18,8 @@ public class StartPresenter {
     private final HighScoreView highScoreView;
     private final HighScorePresenter highScorePresenter;
     private MusicPlayer musicPlayer;
-    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter,HighScoreView highScoreView, HighScorePresenter highScorePresenter, MusicPlayer musicPlayer) {
+
+    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter, HighScoreView highScoreView, HighScorePresenter highScorePresenter, MusicPlayer musicPlayer) {
         this.startView = view;
         this.gameView = gameView;
         this.model = model;
@@ -94,12 +95,24 @@ public class StartPresenter {
 
         startView.getContinueGame().setOnAction(Event -> {
             musicPlayer.playClick();
-
             try {
-                logger.loadSave();
+                if (logger.getMode() != Modes.AI) {
+                    try {
+                        logger.loadSave();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        logger.loadAi();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
             try {

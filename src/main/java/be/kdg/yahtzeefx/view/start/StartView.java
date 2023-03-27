@@ -26,7 +26,7 @@ public class StartView extends GridPane {
     private Spinner<Integer> tournamentSpinner;
 
     private GridPane multiplayerpane;
-    private GridPane tournamentPain;
+    private GridPane tournamentPane;
 
     private PreferenceView pView;
     public StartView(PreferenceView pView) {
@@ -44,22 +44,26 @@ public class StartView extends GridPane {
         tournament = new Button("tournament");
         continueGame = new Button("continue");
         multiplayerpane = new GridPane();
-        tournamentPain = new GridPane();
+        tournamentPane = new GridPane();
         this.pView = pView;
 
     }
 
     private void layoutNodes() {
+        this.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
         this.add(singlePlayer, 1, 1, 2, 1);
         this.add(ai, 1, 2, 2, 1);
 
         multiplayerpane.add(spinner, 1, 0);
         multiplayerpane.add(multiplayer, 0, 0);
         this.add(multiplayerpane, 1, 3, 2, 1);
-        tournamentPain.add(tournamentSpinner, 1, 0);
-        tournamentPain.add(tournament, 0, 0);
+        tournamentPane.add(tournamentSpinner, 1, 0);
+        tournamentPane.add(tournament, 0, 0);
+        multiplayer.getStyleClass().add("startButtons");
+        tournament.getStyleClass().add("startButtons");
 
-        this.add(tournamentPain, 1, 4, 2, 1);
+        this.add(tournamentPane, 1, 4, 2, 1);
         this.add(continueGame, 1, 5, 2, 1);
         this.add(leaderBoard, 1, 6, 2, 1);
         this.setAlignment(Pos.CENTER);
@@ -67,6 +71,8 @@ public class StartView extends GridPane {
         this.setVgap(10);
         this.setPadding(new Insets(10));
 
+        multiplayer.setMinWidth(500);
+        tournament.setMinWidth(500);
 
         this.setBackground(new Background(
                 new BackgroundImage(
@@ -80,7 +86,7 @@ public class StartView extends GridPane {
         for (Node node : this.getChildren()) {
             if (node instanceof Button) {
                 ((Button) node).setPrefWidth(Double.MAX_VALUE);
-                ((Button) node).setStyle("-fx-background-color: #BFBFBF; -fx-background-radius: 10; -fx-font-size: 16px; -fx-text-fill: #000000;");
+                node.getStyleClass().add("startButtons");
 
             }
         }
