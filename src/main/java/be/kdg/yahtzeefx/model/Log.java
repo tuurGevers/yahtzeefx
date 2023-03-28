@@ -10,11 +10,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class Log {
-    private YahtzeeModel model;
+    private final YahtzeeModel model;
     Path[] playerPaths;
     Path[] tournamentPaths;
-    private Path mode;
-    private Path highScores;
+    private final Path mode;
+    private final Path highScores;
 
     private void appendFile(Path path, String message) throws IOException {
         Files.write(path, message.getBytes(), StandardOpenOption.APPEND);
@@ -254,10 +254,6 @@ public class Log {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
         return Integer.parseInt(gelezenLijnen.get(4));
-    }
-
-    public Path[] getPlayerPaths() {
-        return playerPaths;
     }
 
     public void addHighScore(String text, int score) {

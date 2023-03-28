@@ -6,6 +6,8 @@ import javafx.geometry.Side;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
+import java.util.Objects;
+
 public class YahtzeeView extends GridPane {
     private GameView gameView;
     private ScoreView scoreView;
@@ -26,7 +28,7 @@ public class YahtzeeView extends GridPane {
 
         this.setBackground(new Background(
                 new BackgroundImage(
-                        new Image(getClass().getResource("/images/playing.png").toExternalForm()),
+                        new Image(Objects.requireNonNull(getClass().getResource("/images/playing.png")).toExternalForm()),
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         new BackgroundPosition(Side.LEFT, 0.0, false, Side.BOTTOM, 0.0, false),

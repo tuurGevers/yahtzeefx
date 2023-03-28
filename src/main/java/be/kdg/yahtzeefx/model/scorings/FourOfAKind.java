@@ -3,15 +3,18 @@ package be.kdg.yahtzeefx.model.scorings;
 import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
+import java.util.Arrays;
+
 public class FourOfAKind extends Scoring {
+    public FourOfAKind(int id) {
+        super(id);
+    }
+
     //som van alle stenen
     @Override
     public int getScore(Dice[] dice) {
-        int sum = 0;
-        for (Dice d : dice) {
-            sum += d.getValue();
-        }
-        return sum;
+        return Arrays.stream(dice).mapToInt(Dice::getValue).sum();
+
     }
 
     //true als de frequentie van een getal hoger is als 4

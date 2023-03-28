@@ -3,15 +3,18 @@ package be.kdg.yahtzeefx.model.scorings;
 import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Chance extends Scoring {
+    public Chance(int id) {
+        super(id);
+    }
+
     //totaal punten
     @Override
     public int getScore(Dice[] dice) {
-        int sum = 0;
-        for (Dice d : dice) {
-            sum += d.getValue();
-        }
-        return sum;
+        return Arrays.stream(dice).mapToInt(Dice::getValue).sum();
     }
 
     //altijd true

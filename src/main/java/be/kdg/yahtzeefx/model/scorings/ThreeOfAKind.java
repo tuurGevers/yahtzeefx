@@ -3,15 +3,17 @@ package be.kdg.yahtzeefx.model.scorings;
 import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
+import java.util.Arrays;
+
 public class ThreeOfAKind extends Scoring {
+    public ThreeOfAKind(int id) {
+        super(id);
+    }
+
     //totaal van stenen
     @Override
     public int getScore(Dice[] dice) {
-        int sum = 0;
-        for (Dice d : dice) {
-            sum += d.getValue();
-        }
-        return sum;
+        return Arrays.stream(dice).mapToInt(Dice::getValue).sum();
     }
 
     //true als er eeen waarde 3 keer voorkomt

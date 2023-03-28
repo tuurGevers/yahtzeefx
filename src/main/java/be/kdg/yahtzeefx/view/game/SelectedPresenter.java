@@ -6,13 +6,12 @@ import be.kdg.yahtzeefx.model.YahtzeeModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Objects;
 
 public class SelectedPresenter {
-    private YahtzeeModel model;
-    private YahtzeeView view;
-    private MusicPlayer musicPlayer;
+    private final YahtzeeModel model;
+    private final YahtzeeView view;
+    private final MusicPlayer musicPlayer;
     public SelectedPresenter(YahtzeeModel model, YahtzeeView view, MusicPlayer musicPlayer) {
         this.model = model;
         this.view = view;
@@ -43,7 +42,7 @@ public class SelectedPresenter {
         for (int i = 0; i < 5; i++) {
             aantallen[i] = dice[i].getValue();
             //update imageview
-            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+            view.getGameView().getDice()[i].setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/die" + aantallen[i] + ".png")).toExternalForm()));
             if (!dice[i].isHeld()) {
                 view.getGameView().getDice()[i].setVisible(true);
 

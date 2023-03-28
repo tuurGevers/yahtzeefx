@@ -1,8 +1,8 @@
 package be.kdg.yahtzeefx.model;
 
 public class Player {
-    private int playerId;
-    private String name;
+    private final int playerId;
+    private final String name;
     public Score score;
 
     public Player(int playerId, String name, Score score) {

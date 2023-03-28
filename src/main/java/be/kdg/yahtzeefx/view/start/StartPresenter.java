@@ -3,9 +3,7 @@ package be.kdg.yahtzeefx.view.start;
 import be.kdg.yahtzeefx.model.*;
 import be.kdg.yahtzeefx.view.game.YahtzeePresenter;
 import be.kdg.yahtzeefx.view.game.YahtzeeView;
-import be.kdg.yahtzeefx.view.highscores.HighScorePresenter;
 import be.kdg.yahtzeefx.view.highscores.HighScoreView;
-import javafx.geometry.Insets;
 
 import java.io.IOException;
 
@@ -16,17 +14,15 @@ public class StartPresenter {
     private final Log logger;
     private final YahtzeePresenter gamePresenter;
     private final HighScoreView highScoreView;
-    private final HighScorePresenter highScorePresenter;
-    private MusicPlayer musicPlayer;
+    private final MusicPlayer musicPlayer;
 
-    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter, HighScoreView highScoreView, HighScorePresenter highScorePresenter, MusicPlayer musicPlayer) {
+    public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter, HighScoreView highScoreView, MusicPlayer musicPlayer) {
         this.startView = view;
         this.gameView = gameView;
         this.model = model;
         this.logger = new Log(model);
         this.gamePresenter = gamePresenter;
         this.highScoreView = highScoreView;
-        this.highScorePresenter = highScorePresenter;
         this.musicPlayer = musicPlayer;
         this.musicPlayer.playMusic();
         addEventHandlers();
@@ -85,7 +81,7 @@ public class StartPresenter {
             for (int i = 1; i < startView.getTournamentSpinner(); i++) {
                 model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
             }
-
+            gameView.getGameView().getTournamentRounds().setVisible(true);
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
         });
@@ -109,6 +105,10 @@ public class StartPresenter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            if (model.getMode() == Modes.TOURNAMENT)
+                gameView.getGameView().getTournamentRounds().setVisible(true);
+
 
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();

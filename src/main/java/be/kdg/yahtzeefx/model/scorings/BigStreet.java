@@ -6,6 +6,10 @@ import be.kdg.yahtzeefx.model.Scoring;
 import java.util.Map;
 
 public class BigStreet extends Scoring {
+    public BigStreet(int id) {
+        super(id);
+    }
+
     //40 punten waard
     @Override
     public int getScore(Dice[] dice) {

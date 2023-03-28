@@ -4,6 +4,10 @@ import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
 public class FullHouse extends Scoring {
+    public FullHouse(int id) {
+        super(id);
+    }
+
     @Override
     public int getScore(Dice[] dice) {
         return 25;

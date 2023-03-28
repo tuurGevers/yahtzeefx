@@ -1,15 +1,12 @@
 package be.kdg.yahtzeefx.view.preferences;
 
 import be.kdg.yahtzeefx.model.MusicPlayer;
-import be.kdg.yahtzeefx.model.YahtzeeModel;
 
 public class PreferencePresenter {
-    private YahtzeeModel model;
-    private PreferenceView view;
-    private MusicPlayer musicPlayer;
+    private final PreferenceView view;
+    private final MusicPlayer musicPlayer;
 
-    public PreferencePresenter(YahtzeeModel model, PreferenceView view, MusicPlayer musicPlayer) {
-        this.model = model;
+    public PreferencePresenter(PreferenceView view, MusicPlayer musicPlayer) {
         this.view = view;
         this.musicPlayer = musicPlayer;
         addEventListeners();
@@ -24,8 +21,6 @@ public class PreferencePresenter {
             }
         });
 
-        view.getSfx().setOnAction(ActionEvent ->{
-            musicPlayer.toggleSfx();
-        });
+        view.getSfx().setOnAction(ActionEvent -> musicPlayer.toggleSfx());
     }
 }

@@ -4,9 +4,10 @@ import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
 public class Eyes extends Scoring {
-    private int eye;
+    private final int eye;
 
     public Eyes(int eye) {
+        super(eye);
         this.eye = eye;
     }
     //waarde oog * aantal keer oog

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class AI {
     private Player player;
-    private Log logger;
+    private final Log logger;
     public AI(Log logger) {
         this.player = new Player(3, "computer", new Score());
         this.logger = logger;
@@ -30,10 +30,8 @@ public class AI {
         for (Dice d : dice) {
             int value = d.getValue();
             frequency.put(value, frequency.getOrDefault(value, 0) + 1);
-        }
-        for (Dice d : dice) {
-            int value = d.getValue();
             d.setHeld(frequency.get(value) >= 2);
+
         }
 
     }

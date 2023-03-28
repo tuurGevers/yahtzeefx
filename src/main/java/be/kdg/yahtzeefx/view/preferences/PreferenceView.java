@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.util.Objects;
+
 public class PreferenceView extends GridPane {
     private Button music;
     private Button sfx;
@@ -14,7 +16,7 @@ public class PreferenceView extends GridPane {
     }
 
     private void initializeNodes() {
-        this.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
         music = new Button("Music");
         sfx = new Button("Sound");
 

@@ -1,15 +1,15 @@
 package be.kdg.yahtzeefx.view.game;
 
-import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+
+import java.util.Objects;
 
 public class GameView extends GridPane {
     private ImageView[] dice;
@@ -28,12 +28,12 @@ public class GameView extends GridPane {
     }
 
     private void initialiseNodes() {
-        this.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
 
         //voor elke dice wordt er een imageview gemaakt en een id geset
         dice = new ImageView[5];
         for (int i = 0; i < 5; i++) {
-            dice[i] = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
+            dice[i] = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/die1.png")).toExternalForm()));
             dice[i].setId(String.valueOf(i));
         }
         //andere ui components initialiseren
@@ -63,8 +63,8 @@ public class GameView extends GridPane {
         this.add(computerScore, 6, 1);
 
         this.add(rounds, 5, 1);
-        this.add(tournamentRounds, 4, 1);
-
+        this.add(tournamentRounds, 7, 1);
+        this.tournamentRounds.setVisible(false);
         this.trow.getStyleClass().add("startButtons");
         for (Node node : this.getChildren()) {
             if (node instanceof Label) {

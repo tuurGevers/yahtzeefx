@@ -2,8 +2,6 @@ package be.kdg.yahtzeefx.view.highscores;
 
 import be.kdg.yahtzeefx.view.start.StartView;
 
-import static be.kdg.yahtzeefx.Main.getView;
-
 public class HighScorePresenter {
     private final HighScoreView view;
     private final StartView startView;

@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Scoring {
-    private String name;
+    protected int id;
+
+    public Scoring(int id){
+        this.id = id;
+    }
 
     protected abstract int getScore(Dice[] dice);
 
@@ -20,5 +24,9 @@ public abstract class Scoring {
             frequency.put(value, frequency.getOrDefault(value, 0) + 1);
         }
         return frequency;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

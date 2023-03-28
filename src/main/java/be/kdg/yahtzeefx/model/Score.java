@@ -22,7 +22,4 @@ public class Score  {
         return String.valueOf(points);
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
 }

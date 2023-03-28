@@ -1,12 +1,8 @@
 package be.kdg.yahtzeefx.view.game;
 
-import be.kdg.yahtzeefx.Main;
 import be.kdg.yahtzeefx.model.*;
-import be.kdg.yahtzeefx.view.start.StartView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,16 +12,15 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
 
 import static be.kdg.yahtzeefx.Main.getView;
 
 public class YahtzeePresenter {
-    private YahtzeeModel model;
-    private YahtzeeView view;
+    private final YahtzeeModel model;
+    private final YahtzeeView view;
     private boolean selected;
-    private Log logger;
-    private MusicPlayer musicPlayer;
+    private final Log logger;
+    private final MusicPlayer musicPlayer;
 
 
     public YahtzeePresenter(
@@ -160,12 +155,10 @@ public class YahtzeePresenter {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> {
                     for (ImageView dice : view.getGameView().getDice())
-                        dice.setImage(new Image(getClass().getResource("/images/rolling.gif").toExternalForm()));
+                        dice.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/rolling.gif")).toExternalForm()));
                     musicPlayer.playDice();
                 }),
-                new KeyFrame(Duration.seconds(0.5), e -> {
-                   setImages();
-                })
+                new KeyFrame(Duration.seconds(0.5), e -> setImages())
         );
         timeline.play();
 
@@ -325,7 +318,7 @@ public class YahtzeePresenter {
         for (int i = 0; i < 5; i++) {
             aantallen[i] = dice[i].getValue();
             //update imageview
-            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+            view.getGameView().getDice()[i].setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/die" + aantallen[i] + ".png")).toExternalForm()));
         }
     }
 
@@ -333,25 +326,23 @@ public class YahtzeePresenter {
         //maak een array met de waardes van de dobbelstenen
         int[] aantallen = new int[5];
         Dice[] dice = model.getDice();
-        int selectedCount = model.getSelectedCount();
         view.getSelectedView().getChildren().removeAll();
         for (int i = 0; i < 5; i++) {
             ImageView selectedDice = view.getSelectedView().getDice()[i];
             aantallen[i] = dice[i].getValue();
             //update imageview
-            view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+            view.getGameView().getDice()[i].setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/die" + aantallen[i] + ".png")).toExternalForm()));
             if (dice[i].isHeld()) {
                 view.getGameView().getDice()[i].setVisible(false);
                 if (!view.getSelectedView().getChildren().contains(selectedDice)) {
 
                     view.getSelectedView().add(selectedDice, i + 1, 0);
                     selectedDice.setVisible(true);
-                    selectedDice.setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
+                    selectedDice.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/die" + aantallen[i] + ".png")).toExternalForm()));
                     view.getScene().getWindow().sizeToScene();
 
                 }
             } else {
-                selectedCount--;
                 view.getSelectedView().getChildren().remove(selectedDice);
                 view.getGameView().getDice()[i].setVisible(true);
             }

@@ -1,7 +1,5 @@
 package be.kdg.yahtzeefx.view.start;
 
-import be.kdg.yahtzeefx.view.preferences.PreferenceView;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -28,13 +26,12 @@ public class StartView extends GridPane {
     private GridPane multiplayerpane;
     private GridPane tournamentPane;
 
-    private PreferenceView pView;
-    public StartView(PreferenceView pView) {
-        initialiseNodes(pView);
+    public StartView() {
+        initialiseNodes();
         layoutNodes();
     }
 
-    private void initialiseNodes(PreferenceView pView) {
+    private void initialiseNodes() {
         singlePlayer = new Button("single player");
         ai = new Button("play against pc");
         leaderBoard = new Button("LeaderBoard");
@@ -45,12 +42,11 @@ public class StartView extends GridPane {
         continueGame = new Button("continue");
         multiplayerpane = new GridPane();
         tournamentPane = new GridPane();
-        this.pView = pView;
 
     }
 
     private void layoutNodes() {
-        this.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
 
         this.add(singlePlayer, 1, 1, 2, 1);
         this.add(ai, 1, 2, 2, 1);
@@ -76,7 +72,7 @@ public class StartView extends GridPane {
 
         this.setBackground(new Background(
                 new BackgroundImage(
-                        new Image(getClass().getResource("/images/yahtzee.png").toExternalForm()),
+                        new Image(Objects.requireNonNull(getClass().getResource("/images/yahtzee.png")).toExternalForm()),
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         new BackgroundPosition(Side.LEFT, 0.0, false, Side.BOTTOM, 0.0, false),

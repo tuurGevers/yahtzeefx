@@ -1,12 +1,11 @@
 package be.kdg.yahtzeefx.view.game;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+
+import java.util.Objects;
 
 public class SelectedView extends GridPane {
     private ImageView[] dice;
@@ -20,7 +19,7 @@ public class SelectedView extends GridPane {
         //voor elke dice wordt er een imageview gemaakt en een id geset
         dice = new ImageView[5];
         for (int i = 0; i < 5; i++) {
-            dice[i] = new ImageView(new Image(getClass().getResource("/images/die1.png").toExternalForm()));
+            dice[i] = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/die1.png")).toExternalForm()));
             dice[i].setId(String.valueOf(i));
         }
 

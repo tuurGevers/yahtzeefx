@@ -5,7 +5,7 @@ import java.util.Random;
 public class Dice {
     private int value;
     private boolean isHeld;
-    private Random rdm = new Random();
+    private final Random rdm = new Random();
     public Dice(int value, boolean isHeld) {
         this.value = value;
         this.isHeld = isHeld;

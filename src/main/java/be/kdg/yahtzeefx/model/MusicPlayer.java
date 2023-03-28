@@ -1,20 +1,18 @@
 package be.kdg.yahtzeefx.model;
 
-import javafx.concurrent.Task;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.io.File;
+import java.util.Objects;
 
 public class MusicPlayer {
-    private Media music;
-    private MediaPlayer mediaPlayer;
+    private final MediaPlayer mediaPlayer;
     private boolean playing;
     private boolean sfx;
 
     public MusicPlayer() {
-        music = new Media(getClass().getResource("/sound/music.mp3").toExternalForm());
+        Media music = new Media(Objects.requireNonNull(getClass().getResource("/sound/music.mp3")).toExternalForm());
         mediaPlayer = new MediaPlayer(music);
         mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
         this.playing = true;
@@ -23,7 +21,7 @@ public class MusicPlayer {
 
     public void playClick() {
         if (sfx) {
-            Media buttonSound = new Media(getClass().getResource("/sound/ui-click.mp3").toExternalForm());
+            Media buttonSound = new Media(Objects.requireNonNull(getClass().getResource("/sound/ui-click.mp3")).toExternalForm());
             MediaPlayer mediaPlayer = new MediaPlayer(buttonSound);
             mediaPlayer.play();
         }
@@ -32,7 +30,7 @@ public class MusicPlayer {
 
     public void playDice() {
         if (sfx) {
-            Media buttonSound = new Media(getClass().getResource("/sound/dice.mp3").toExternalForm());
+            Media buttonSound = new Media(Objects.requireNonNull(getClass().getResource("/sound/dice.mp3")).toExternalForm());
             MediaPlayer mediaPlayer = new MediaPlayer(buttonSound);
             mediaPlayer.play();
         }

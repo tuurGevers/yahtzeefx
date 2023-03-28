@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Main extends Application {
     static StartView view;
@@ -31,14 +32,14 @@ public class Main extends Application {
         MusicPlayer musicPlayer = new MusicPlayer();
 
         //lijst van players maken
-        ArrayList<Player> players = new ArrayList();
+        ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
 
         //mvp
         YahtzeeModel model =
                 new YahtzeeModel(players);
         PreferenceView preferenceView = new PreferenceView();
-        view = new StartView(preferenceView);
+        view = new StartView();
 
         YahtzeeView gameView = new YahtzeeView(preferenceView);
         YahtzeePresenter gamePresenter =
@@ -46,9 +47,9 @@ public class Main extends Application {
         HighScoreView highScoreView = new HighScoreView(model);
         HighScorePresenter highScorePresenter = new HighScorePresenter(highScoreView, view);
         StartPresenter presenter =
-                new StartPresenter(view, gameView, model, gamePresenter, highScoreView, highScorePresenter, musicPlayer);
+                new StartPresenter(view, gameView, model, gamePresenter, highScoreView, musicPlayer);
         SelectedPresenter selectedPresenter = new SelectedPresenter(model, gameView, musicPlayer);
-        PreferencePresenter preferencePresenter = new PreferencePresenter(model, preferenceView, musicPlayer);
+        PreferencePresenter preferencePresenter = new PreferencePresenter(preferenceView, musicPlayer);
         primaryStage.setScene(new Scene(view));
 
         //titel
@@ -60,7 +61,7 @@ public class Main extends Application {
         primaryStage.setWidth(750);
         primaryStage.setHeight(600);
         primaryStage.centerOnScreen();
-        primaryStage.getIcons().add(new Image(getClass().getResource("/images/icon.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("/images/icon.png")).toExternalForm()));
 
 
         primaryStage.show();
