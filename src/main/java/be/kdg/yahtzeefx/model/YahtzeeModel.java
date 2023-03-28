@@ -1,9 +1,6 @@
 package be.kdg.yahtzeefx.model;
 
 import be.kdg.yahtzeefx.model.scorings.*;
-import javafx.concurrent.Task;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.util.*;
 
@@ -18,6 +15,7 @@ public class YahtzeeModel {
     private Log log;
     private int tournamentRound;
     private AI computer;
+
     //checkers
     Eyes eye1 = new Eyes(1);
     Eyes eye2 = new Eyes(2);

@@ -174,6 +174,7 @@ public class YahtzeePresenter {
 
     private void endTurn() throws FileException {
         view.getScene().getWindow().sizeToScene();
+        view.getGameView().getScene().getWindow().sizeToScene();
 
         model.setFinished();
         model.trows = 0;

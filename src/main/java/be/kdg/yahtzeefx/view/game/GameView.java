@@ -75,6 +75,7 @@ public class GameView extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10));
+        this.setMinSize(600, 600);
     }
 
 

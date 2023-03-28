@@ -15,11 +15,9 @@ import be.kdg.yahtzeefx.view.start.StartPresenter;
 import be.kdg.yahtzeefx.view.start.StartView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -62,6 +60,7 @@ public class Main extends Application {
         primaryStage.setWidth(750);
         primaryStage.setHeight(600);
         primaryStage.centerOnScreen();
+        primaryStage.getIcons().add(new Image(getClass().getResource("/images/icon.png").toExternalForm()));
 
 
         primaryStage.show();
