@@ -2,6 +2,7 @@ package be.kdg.yahtzeefx.view.game;
 
 import be.kdg.yahtzeefx.view.preferences.PreferenceView;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,6 +28,8 @@ public class GameView extends GridPane {
     }
 
     private void initialiseNodes() {
+        this.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
         //voor elke dice wordt er een imageview gemaakt en een id geset
         dice = new ImageView[5];
         for (int i = 0; i < 5; i++) {
@@ -54,13 +57,20 @@ public class GameView extends GridPane {
         this.add(dice[3], 2, 4);
         this.add(dice[4], 3, 4);
         this.add(trow, 2, 5, 2, 1);
-        this.add(trowCount, 0, 1);
-        this.add(currentPlayer, 1, 1, 3, 1);
-        this.add(score, 0, 2);
-        this.add(computerScore, 0, 3);
+        this.add(trowCount, 1, 1);
+        this.add(currentPlayer, 2, 1, 3, 1);
+        this.add(score, 0, 1);
+        this.add(computerScore, 6, 1);
 
-        this.add(rounds, 3, 1);
-        this.add(tournamentRounds, 2, 2);
+        this.add(rounds, 5, 1);
+        this.add(tournamentRounds, 4, 1);
+
+        this.trow.getStyleClass().add("startButtons");
+        for (Node node : this.getChildren()) {
+            if (node instanceof Label) {
+                node.getStyleClass().add("gameLabel");
+            }
+        }
         //basis styling
         this.setHgap(10);
         this.setVgap(10);

@@ -12,3 +12,9 @@ zzzzz:45
 zez:18
 tlc:79
 computer:91
+test123:50
+enter name:35
+enter name:25
+enter name:24
+enter name:14
+tuur:60

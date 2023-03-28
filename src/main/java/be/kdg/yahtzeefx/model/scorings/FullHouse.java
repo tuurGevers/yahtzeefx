@@ -24,7 +24,6 @@ public class FullHouse extends Scoring {
         if (threeOfAKindValue != 0) {
             for (int value : getFrequenty(dice).keySet()) {
                 if (value != threeOfAKindValue && getFrequenty(dice).get(value) == 2) {
-                    System.out.println("2");
                     return true;
                 }
             }

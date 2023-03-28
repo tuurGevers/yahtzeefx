@@ -3,13 +3,20 @@ package be.kdg.yahtzeefx.view.game;
 import be.kdg.yahtzeefx.Main;
 import be.kdg.yahtzeefx.model.*;
 import be.kdg.yahtzeefx.view.start.StartView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 import static be.kdg.yahtzeefx.Main.getView;
 
@@ -41,14 +48,16 @@ public class YahtzeePresenter {
         view.getGameView().getTrow().setOnAction(
                 event -> {
                     if (!selected && model.trows < 3) {
+                        //rol dobbelstenen
+                        model.rollDice();
                         try {
-                            //rol dobbelstenen
-                            model.rollDice();
+                            rolling();
+
                             updateView();
                             logger.saveMode();
                             logger.saveDice();
                             musicPlayer.playClick();
-                        } catch (IOException e) {
+                        } catch (IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -147,7 +156,25 @@ public class YahtzeePresenter {
 
     }
 
+    private void rolling() throws InterruptedException {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> {
+                    for (ImageView dice : view.getGameView().getDice())
+                        dice.setImage(new Image(getClass().getResource("/images/rolling.gif").toExternalForm()));
+                    musicPlayer.playDice();
+                }),
+                new KeyFrame(Duration.seconds(0.5), e -> {
+                   setImages();
+                })
+        );
+        timeline.play();
+
+    }
+
+
     private void endTurn() throws FileException {
+        view.getScene().getWindow().sizeToScene();
+
         model.setFinished();
         model.trows = 0;
         model.nextTurn();
@@ -156,9 +183,12 @@ public class YahtzeePresenter {
             model.getDice()[i].setHeld(false);
             selectDice();
         }
+        view.getGameView().getTrow().fire();
+
     }
 
     public void updateView() {
+
         if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI) {
 
             try {
@@ -173,6 +203,7 @@ public class YahtzeePresenter {
         selectDice();
         updateUI();
         updateGameUi();
+
     }
 
     private void updateGameUi() {
@@ -230,14 +261,14 @@ public class YahtzeePresenter {
     private void endGameCheck() {
         //als het spel gedaan is wordt er een alert getoond
         if (model.isFinished() && model.getMode() != Modes.TOURNAMENT) {
-            if(model.getMode() == Modes.AI){
-                if(model.getWinner() != model.getPlayers().get(1)){
+            if (model.getMode() == Modes.AI) {
+                if (model.getWinner() != model.getPlayers().get(1)) {
                     endAlert();
-                }else{
+                } else {
                     model.restart();
                     view.getGameView().getScene().setRoot(getView());
                 }
-            }else{
+            } else {
                 endAlert();
             }
         } else if (model.isFinished() && model.getTournamentRound() == 5) {
@@ -245,7 +276,7 @@ public class YahtzeePresenter {
             try {
                 view.getGameView().getTd().setContentText(model.getLog().getWinner());
                 view.getGameView().getTd().showAndWait();
-                logger.addHighScore(view.getGameView().getTd().getEditor().getText(), Integer.parseInt(model.playerFromString(model.getLog().getWinner()).score.getPoints()));
+                logger.addHighScore(Objects.requireNonNullElse(view.getGameView().getTd().getEditor().getText(), "random"), Integer.parseInt(model.playerFromString(model.getLog().getWinner()).score.getPoints()));
                 model.restart();
                 view.getGameView().getScene().setRoot(getView());
             } catch (IOException e) {
@@ -276,6 +307,16 @@ public class YahtzeePresenter {
         //update ui naar actuele speler
         view.getGameView().getCurrentPlayer().setText(String.format("current player: %s", model.currentPlayer().getName()));
 
+        setImages();
+
+        //update trowcount label
+        view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
+        if (model.getMode() == Modes.TOURNAMENT) {
+            view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
+        }
+    }
+
+    private void setImages() {
         //maak een array met de waardes van de dobbelstenen
         int[] aantallen = new int[5];
         Dice[] dice = model.getDice();
@@ -284,12 +325,6 @@ public class YahtzeePresenter {
             aantallen[i] = dice[i].getValue();
             //update imageview
             view.getGameView().getDice()[i].setImage(new Image(getClass().getResource("/images/die" + aantallen[i] + ".png").toExternalForm()));
-        }
-
-        //update trowcount label
-        view.getGameView().getTrowCount().setText(String.format("trows: %d", model.trows));
-        if (model.getMode() == Modes.TOURNAMENT) {
-            view.getGameView().getTournamentRounds().setText(model.getTournamentRound() + "/5");
         }
     }
 
@@ -315,7 +350,7 @@ public class YahtzeePresenter {
 
                 }
             } else {
-                selectedCount --;
+                selectedCount--;
                 view.getSelectedView().getChildren().remove(selectedDice);
                 view.getGameView().getDice()[i].setVisible(true);
             }
@@ -323,7 +358,14 @@ public class YahtzeePresenter {
     }
 
     public void addWindowEventHandlers() {
-
+        view.getScene().getWindow().setOnCloseRequest(WindowEvent -> {
+            try {
+                logger.saveMode();
+                logger.saveGame();
+            } catch (IOException | FileException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 }

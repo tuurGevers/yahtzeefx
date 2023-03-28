@@ -38,6 +38,7 @@ public class StartPresenter {
             musicPlayer.playClick();
 
             model.setPlayer(0, new Player(0, "player 1", new Score()));
+            model.setMode(Modes.SINGLE);
             startView.getScene().setRoot(gameView);
             gameView.getScene().getWindow().sizeToScene();
 
@@ -64,6 +65,7 @@ public class StartPresenter {
         });
         startView.getMultiplayer().setOnAction(Event -> {
             model.setPlayer(0, new Player(0, "player 1", new Score()));
+            model.setMode(Modes.SINGLE);
 
             for (int i = 1; i < startView.getSpinner(); i++) {
                 model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
@@ -82,11 +84,6 @@ public class StartPresenter {
 
             for (int i = 1; i < startView.getTournamentSpinner(); i++) {
                 model.getPlayers().add(new Player(0, String.format("player %d", i + 1), new Score()));
-            }
-            try {
-                model.getLog().createRounds();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
             startView.getScene().setRoot(gameView);

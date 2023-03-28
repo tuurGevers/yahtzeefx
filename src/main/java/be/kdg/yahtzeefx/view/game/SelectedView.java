@@ -27,14 +27,6 @@ public class SelectedView extends GridPane {
     }
 
     private void layoutNodes() {
-        //dobbelstenen en ander ui componenten plaatsen
-        /*this.add(dice[0], 1, 0);
-        this.add(dice[1], 2, 0);
-        this.add(dice[2], 3, 0);
-        this.add(dice[3], 4, 0);
-        this.add(dice[4], 5, 0);*/
-
-
         //basis styling
         this.setHgap(10);
         this.setVgap(10);

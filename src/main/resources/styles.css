@@ -7,7 +7,10 @@
 
 .startButtons:hover {
     -fx-background-color: #121;
-    -fx-background-radius: 10;
-    -fx-font-size: 16px;
     -fx-text-fill: #BFBFBF;
+}
+
+.gameLabel{
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
 }

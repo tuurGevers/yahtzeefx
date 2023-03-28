@@ -23,7 +23,6 @@ public class Log {
     public Log(YahtzeeModel model) {
         this.model = model;
         this.playerPaths = new Path[model.getPlayers().size()];
-        this.tournamentPaths = new Path[2];
         this.mode = Paths.get("src/main/resources/log/mode.txt");
         this.highScores = Paths.get("src/main/resources/log/highScores.txt");
     }
@@ -51,6 +50,16 @@ public class Log {
     public void saveGame() throws FileException {
         Path[] playerPaths = new Path[model.getPlayers().size()];
         try {
+            Path directory = Paths.get("src/main/resources/log/");
+            Path[] files = Arrays.stream(Objects.requireNonNull(directory.toFile().listFiles(File::isFile)))
+                    .filter(file -> file.getName().startsWith("logplayer"))
+                    .map(File::toPath)
+                    .toArray(Path[]::new);
+
+            for (Path file: files){
+                Files.deleteIfExists(file);
+            }
+
             for (int i = 0; i < model.getPlayers().size(); i++) {
                 playerPaths[i] = Paths.get("src/main/resources/log/log" + model.getPlayers().get(i).getName() + ".txt");
                 Files.deleteIfExists(playerPaths[i]);
@@ -73,6 +82,8 @@ public class Log {
     }
 
     public void createRounds() throws IOException {
+       this.tournamentPaths = new Path[model.getPlayers().size()];
+        System.out.println(model.getPlayers());
         for (int i = 0; i < model.getPlayers().size(); i++) {
             tournamentPaths[i] = Paths.get("src/main/resources/log/tournamnetLog" + model.getPlayers().get(i).getName() + ".txt");
             Files.deleteIfExists(tournamentPaths[i]);
@@ -82,6 +93,15 @@ public class Log {
 
     public void saveRound() throws FileException {
         try {
+            createRounds();
+            Path directory = Paths.get("src/main/resources/log/");
+            Path[] files = Arrays.stream(Objects.requireNonNull(directory.toFile().listFiles(File::isFile)))
+                    .filter(file -> file.getName().startsWith("tournamentLogplayer"))
+                    .map(File::toPath)
+                    .toArray(Path[]::new);
+            for (Path file: files){
+                Files.deleteIfExists(file);
+            }
             int index = 0;
             for (Player p : model.getPlayers()) {
                 if (model.getTournamentRound() != 1) {

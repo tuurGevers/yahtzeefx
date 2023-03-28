@@ -30,6 +30,15 @@ public class MusicPlayer {
 
     }
 
+    public void playDice() {
+        if (sfx) {
+            Media buttonSound = new Media(getClass().getResource("/sound/dice.mp3").toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(buttonSound);
+            mediaPlayer.play();
+        }
+
+    }
+
     public void playMusic() {
         mediaPlayer.play();
         playing = true;
