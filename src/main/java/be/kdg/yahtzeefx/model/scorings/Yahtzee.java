@@ -3,7 +3,15 @@ package be.kdg.yahtzeefx.model.scorings;
 import be.kdg.yahtzeefx.model.Dice;
 import be.kdg.yahtzeefx.model.Scoring;
 
+/**
+ * The type Yahtzee.
+ */
 public class Yahtzee extends Scoring {
+    /**
+     * Instantiates a new Yahtzee.
+     *
+     * @param id the id
+     */
     public Yahtzee(int id) {
         super(id);
     }

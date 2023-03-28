@@ -9,9 +9,18 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
+/**
+ * The type Log.
+ */
 public class Log {
     private final YahtzeeModel model;
+    /**
+     * The Player paths.
+     */
     Path[] playerPaths;
+    /**
+     * The Tournament paths.
+     */
     Path[] tournamentPaths;
     private final Path mode;
     private final Path highScores;
@@ -20,6 +29,11 @@ public class Log {
         Files.write(path, message.getBytes(), StandardOpenOption.APPEND);
     }
 
+    /**
+     * Instantiates a new Log.
+     *
+     * @param model the model
+     */
     public Log(YahtzeeModel model) {
         this.model = model;
         this.playerPaths = new Path[model.getPlayers().size()];
@@ -27,6 +41,11 @@ public class Log {
         this.highScores = Paths.get("src/main/resources/log/highScores.txt");
     }
 
+    /**
+     * Save mode.
+     *
+     * @throws IOException the io exception
+     */
     public void saveMode() throws IOException {
         Files.deleteIfExists(mode);
         Files.createFile(mode);
@@ -38,6 +57,11 @@ public class Log {
 
     }
 
+    /**
+     * Save dice.
+     *
+     * @throws IOException the io exception
+     */
     public void saveDice() throws IOException {
         Path path = Paths.get("src/main/resources/log/dice.txt");
         Files.deleteIfExists(path);
@@ -47,6 +71,11 @@ public class Log {
         }
     }
 
+    /**
+     * Save game.
+     *
+     * @throws FileException the file exception
+     */
     public void saveGame() throws FileException {
         Path[] playerPaths = new Path[model.getPlayers().size()];
         try {
@@ -81,6 +110,11 @@ public class Log {
         }
     }
 
+    /**
+     * Create rounds.
+     *
+     * @throws IOException the io exception
+     */
     public void createRounds() throws IOException {
        this.tournamentPaths = new Path[model.getPlayers().size()];
         System.out.println(model.getPlayers());
@@ -91,6 +125,11 @@ public class Log {
         }
     }
 
+    /**
+     * Save round.
+     *
+     * @throws FileException the file exception
+     */
     public void saveRound() throws FileException {
         try {
             createRounds();
@@ -121,6 +160,11 @@ public class Log {
         }
     }
 
+    /**
+     * Save ai.
+     *
+     * @throws IOException the io exception
+     */
     public void saveAi() throws IOException {
         Path path = Paths.get("src/main/resources/log/logcomputer.txt");
         Files.deleteIfExists(path);
@@ -134,6 +178,12 @@ public class Log {
 
     }
 
+    /**
+     * Gets winner.
+     *
+     * @return the winner
+     * @throws IOException the io exception
+     */
     public String getWinner() throws IOException {
         int[] scores = new int[model.getPlayers().size()];
         int maxScore = 0;
@@ -153,6 +203,11 @@ public class Log {
         return String.format("winnaar is %s met een score van %d", model.getPlayers().get(maxIndex).getName(), maxScore);
     }
 
+    /**
+     * Load save.
+     *
+     * @throws IOException the io exception
+     */
     public void loadSave() throws IOException {
         Path directory = Paths.get("src/main/resources/log/");
         Path[] files = Arrays.stream(Objects.requireNonNull(directory.toFile().listFiles(File::isFile)))
@@ -197,6 +252,11 @@ public class Log {
     }
 
 
+    /**
+     * Load ai.
+     *
+     * @throws IOException the io exception
+     */
     public void loadAi() throws IOException {
         Path[] paths = {Paths.get("src/main/resources/log/logplayer 1.txt"),Paths.get("src/main/resources/log/logcomputer.txt")};
         loadPlayers(paths);
@@ -218,6 +278,12 @@ public class Log {
         return Integer.parseInt(gelezenLijnen.get(3));
     }
 
+    /**
+     * Gets mode.
+     *
+     * @return the mode
+     * @throws IOException the io exception
+     */
     public Modes getMode() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
@@ -236,6 +302,11 @@ public class Log {
         return Integer.parseInt(gelezenLijnen.get(2));
     }
 
+    /**
+     * Load dice.
+     *
+     * @throws IOException the io exception
+     */
     public void loadDice() throws IOException {
         Dice[] dice = new Dice[5];
         Path path = Paths.get("src/main/resources/log/dice.txt");
@@ -250,12 +321,24 @@ public class Log {
         }
     }
 
+    /**
+     * Load tournament round int.
+     *
+     * @return the int
+     * @throws IOException the io exception
+     */
     public int loadTournamentRound() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(mode,
                 Charset.defaultCharset());
         return Integer.parseInt(gelezenLijnen.get(4));
     }
 
+    /**
+     * Add high score.
+     *
+     * @param text  the text
+     * @param score the score
+     */
     public void addHighScore(String text, int score) {
         try {
             Files.write(highScores, (text + ":" + score + "\n").getBytes(), StandardOpenOption.APPEND);
@@ -266,6 +349,12 @@ public class Log {
 
     }
 
+    /**
+     * Gets high score.
+     *
+     * @return the high score
+     * @throws IOException the io exception
+     */
     public Map<String, Integer> getHighScore() throws IOException {
         List<String> gelezenLijnen = Files.readAllLines(highScores,
                 Charset.defaultCharset());

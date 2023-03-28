@@ -4,9 +4,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Ai.
+ */
 public class AI {
     private Player player;
     private final Log logger;
+
+    /**
+     * Instantiates a new Ai.
+     *
+     * @param logger the logger
+     */
     public AI(Log logger) {
         this.player = new Player(3, "computer", new Score());
         this.logger = logger;
@@ -65,6 +74,13 @@ public class AI {
         }
     }
 
+    /**
+     * Take turn.
+     *
+     * @param model the model
+     * @throws FileException the file exception
+     * @throws IOException   the io exception
+     */
     public void takeTurn(YahtzeeModel model) throws FileException, IOException {
         for (int i = 0; i < 3; i++) {
             roll(model);
@@ -75,10 +91,20 @@ public class AI {
         this.logger.saveAi();
     }
 
+    /**
+     * Sets player.
+     *
+     * @param player the player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Gets player.
+     *
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }

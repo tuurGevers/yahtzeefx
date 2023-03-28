@@ -7,6 +7,9 @@ import be.kdg.yahtzeefx.view.highscores.HighScoreView;
 
 import java.io.IOException;
 
+/**
+ * The type Start presenter.
+ */
 public class StartPresenter {
     private final StartView startView;
     private final YahtzeeView gameView;
@@ -16,6 +19,16 @@ public class StartPresenter {
     private final HighScoreView highScoreView;
     private final MusicPlayer musicPlayer;
 
+    /**
+     * Instantiates a new Start presenter.
+     *
+     * @param view          the view
+     * @param gameView      the game view
+     * @param model         the model
+     * @param gamePresenter the game presenter
+     * @param highScoreView the high score view
+     * @param musicPlayer   the music player
+     */
     public StartPresenter(StartView view, YahtzeeView gameView, YahtzeeModel model, YahtzeePresenter gamePresenter, HighScoreView highScoreView, MusicPlayer musicPlayer) {
         this.startView = view;
         this.gameView = gameView;

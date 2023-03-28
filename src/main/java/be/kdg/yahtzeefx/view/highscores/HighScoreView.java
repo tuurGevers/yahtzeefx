@@ -8,11 +8,20 @@ import javafx.scene.layout.VBox;
 
 import java.util.Map;
 
+/**
+ * The type High score view.
+ */
 public class HighScoreView extends VBox {
 
     private final Label[] scores;
     private Map<String, Integer> highScores;
     private Button goBack;
+
+    /**
+     * Instantiates a new High score view.
+     *
+     * @param model the model
+     */
     public HighScoreView(YahtzeeModel model)  {
         Log logger = new Log(model);
         try{
@@ -39,6 +48,11 @@ public class HighScoreView extends VBox {
         getChildren().add(goBack);
     }
 
+    /**
+     * Gets go back.
+     *
+     * @return the go back
+     */
     Button getGoBack() {
         return goBack;
     }

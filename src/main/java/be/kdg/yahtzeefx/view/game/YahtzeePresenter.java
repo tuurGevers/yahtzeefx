@@ -15,6 +15,9 @@ import java.util.Objects;
 
 import static be.kdg.yahtzeefx.Main.getView;
 
+/**
+ * The type Yahtzee presenter.
+ */
 public class YahtzeePresenter {
     private final YahtzeeModel model;
     private final YahtzeeView view;
@@ -23,6 +26,13 @@ public class YahtzeePresenter {
     private final MusicPlayer musicPlayer;
 
 
+    /**
+     * Instantiates a new Yahtzee presenter.
+     *
+     * @param model       the model
+     * @param view        the view
+     * @param musicPlayer the music player
+     */
     public YahtzeePresenter(
             YahtzeeModel model,
             YahtzeeView view,
@@ -181,6 +191,9 @@ public class YahtzeePresenter {
 
     }
 
+    /**
+     * Update view.
+     */
     public void updateView() {
 
         if (model.currentPlayer().getId() != 0 && model.getMode() == Modes.AI) {
@@ -349,6 +362,9 @@ public class YahtzeePresenter {
         }
     }
 
+    /**
+     * Add window event handlers.
+     */
     public void addWindowEventHandlers() {
         view.getScene().getWindow().setOnCloseRequest(WindowEvent -> {
             try {

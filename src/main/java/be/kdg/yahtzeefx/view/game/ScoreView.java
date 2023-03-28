@@ -9,14 +9,23 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Score view.
+ */
 public class ScoreView extends GridPane {
     private final Label[] eyeLabels = new Label[13];
     private final TextField[] eyeTextFields = new TextField[13];
+    /**
+     * The Buttons.
+     */
     List<Button> buttons = new ArrayList<>();
     private Label upperBonusLabel, yahtzeeBonusLabel;
     private TextField upperBonusTexfield, yahtzeeBonusTextfield;
     private Button yahtzeeBonusButton;
 
+    /**
+     * Instantiates a new Score view.
+     */
     public ScoreView() {
         this.initialiseNodes();
         this.layoutNodes();
@@ -83,22 +92,47 @@ public class ScoreView extends GridPane {
 
     }
 
+    /**
+     * Get eye text fields text field [ ].
+     *
+     * @return the text field [ ]
+     */
     public TextField[] getEyeTextFields() {
         return eyeTextFields;
     }
 
+    /**
+     * Gets buttons.
+     *
+     * @return the buttons
+     */
     public List<Button> getButtons() {
         return buttons;
     }
 
+    /**
+     * Gets upper bonus texfield.
+     *
+     * @return the upper bonus texfield
+     */
     public TextField getUpperBonusTexfield() {
         return upperBonusTexfield;
     }
 
+    /**
+     * Gets yahtzee bonus textfield.
+     *
+     * @return the yahtzee bonus textfield
+     */
     public TextField getYahtzeeBonusTextfield() {
         return yahtzeeBonusTextfield;
     }
 
+    /**
+     * Gets yahtzee bonus button.
+     *
+     * @return the yahtzee bonus button
+     */
     public Button getYahtzeeBonusButton() {
         return yahtzeeBonusButton;
     }

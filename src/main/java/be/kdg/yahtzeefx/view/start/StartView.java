@@ -11,6 +11,9 @@ import javafx.scene.layout.*;
 
 import java.util.Objects;
 
+/**
+ * The type Start view.
+ */
 public class StartView extends GridPane {
     private Button singlePlayer;
     private Button ai;
@@ -26,6 +29,9 @@ public class StartView extends GridPane {
     private GridPane multiplayerpane;
     private GridPane tournamentPane;
 
+    /**
+     * Instantiates a new Start view.
+     */
     public StartView() {
         initialiseNodes();
         layoutNodes();
@@ -89,34 +95,74 @@ public class StartView extends GridPane {
 
     }
 
+    /**
+     * Gets single player.
+     *
+     * @return the single player
+     */
     Button getSinglePlayer() {
         return singlePlayer;
     }
 
+    /**
+     * Gets multiplayer.
+     *
+     * @return the multiplayer
+     */
     Button getMultiplayer() {
         return multiplayer;
     }
 
+    /**
+     * Gets spinner.
+     *
+     * @return the spinner
+     */
     int getSpinner() {
         return spinner.getValue();
     }
 
+    /**
+     * Gets tournament spinner.
+     *
+     * @return the tournament spinner
+     */
     int getTournamentSpinner() {
         return tournamentSpinner.getValue();
     }
 
+    /**
+     * Gets tournament.
+     *
+     * @return the tournament
+     */
     Button getTournament() {
         return tournament;
     }
 
+    /**
+     * Gets continue game.
+     *
+     * @return the continue game
+     */
     Button getContinueGame() {
         return continueGame;
     }
 
+    /**
+     * Gets leader board.
+     *
+     * @return the leader board
+     */
     Button getLeaderBoard() {
         return leaderBoard;
     }
 
+    /**
+     * Gets ai.
+     *
+     * @return the ai
+     */
     Button getAi() {
         return ai;
     }

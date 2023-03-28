@@ -7,9 +7,15 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
 
+/**
+ * The type Selected view.
+ */
 public class SelectedView extends GridPane {
     private ImageView[] dice;
 
+    /**
+     * Instantiates a new Selected view.
+     */
     public SelectedView(){
         initialiseNodes();
         layoutNodes();
@@ -32,6 +38,11 @@ public class SelectedView extends GridPane {
         this.setPadding(new Insets(10));
     }
 
+    /**
+     * Get dice image view [ ].
+     *
+     * @return the image view [ ]
+     */
     ImageView[] getDice() {
         return dice;
     }

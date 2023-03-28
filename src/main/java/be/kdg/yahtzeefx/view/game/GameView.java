@@ -11,6 +11,9 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
 
+/**
+ * The type Game view.
+ */
 public class GameView extends GridPane {
     private ImageView[] dice;
     private Button trow;
@@ -22,6 +25,9 @@ public class GameView extends GridPane {
     private Label tournamentRounds;
     private Label computerScore;
 
+    /**
+     * Instantiates a new Game view.
+     */
     public GameView() {
         this.initialiseNodes();
         this.layoutNodes();
@@ -79,38 +85,83 @@ public class GameView extends GridPane {
     }
 
 
+    /**
+     * Gets trow.
+     *
+     * @return the trow
+     */
     Button getTrow() {
         return trow;
     }
 
+    /**
+     * Gets trow count.
+     *
+     * @return the trow count
+     */
     Label getTrowCount() {
         return trowCount;
     }
 
+    /**
+     * Gets score.
+     *
+     * @return the score
+     */
     Label getScore() {
         return score;
     }
 
+    /**
+     * Get dice image view [ ].
+     *
+     * @return the image view [ ]
+     */
     ImageView[] getDice() {
         return dice;
     }
 
+    /**
+     * Gets td.
+     *
+     * @return the td
+     */
     TextInputDialog getTd() {
         return td;
     }
 
+    /**
+     * Gets current player.
+     *
+     * @return the current player
+     */
     Label getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Gets rounds.
+     *
+     * @return the rounds
+     */
     Label getRounds() {
         return rounds;
     }
 
+    /**
+     * Gets tournament rounds.
+     *
+     * @return the tournament rounds
+     */
     public Label getTournamentRounds() {
         return tournamentRounds;
     }
 
+    /**
+     * Gets computer score.
+     *
+     * @return the computer score
+     */
     Label getComputerScore() {
         return computerScore;
     }

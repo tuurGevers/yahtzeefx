@@ -8,10 +8,21 @@ import javafx.scene.image.ImageView;
 
 import java.util.Objects;
 
+/**
+ * The type Selected presenter.
+ */
 public class SelectedPresenter {
     private final YahtzeeModel model;
     private final YahtzeeView view;
     private final MusicPlayer musicPlayer;
+
+    /**
+     * Instantiates a new Selected presenter.
+     *
+     * @param model       the model
+     * @param view        the view
+     * @param musicPlayer the music player
+     */
     public SelectedPresenter(YahtzeeModel model, YahtzeeView view, MusicPlayer musicPlayer) {
         this.model = model;
         this.view = view;
@@ -34,6 +45,9 @@ public class SelectedPresenter {
         }
     }
 
+    /**
+     * Update view.
+     */
     public void updateView() {
         //maak een array met de waardes van de dobbelstenen
         int[] aantallen = new int[5];

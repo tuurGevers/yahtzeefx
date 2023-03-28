@@ -6,10 +6,16 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
 
+/**
+ * The type Preference view.
+ */
 public class PreferenceView extends GridPane {
     private Button music;
     private Button sfx;
 
+    /**
+     * Instantiates a new Preference view.
+     */
     public PreferenceView() {
         initializeNodes();
         layoutNodes();
@@ -31,10 +37,20 @@ public class PreferenceView extends GridPane {
         }
     }
 
+    /**
+     * Gets music.
+     *
+     * @return the music
+     */
     Button getMusic() {
         return music;
     }
 
+    /**
+     * Gets sfx.
+     *
+     * @return the sfx
+     */
     Button getSfx() {
         return sfx;
     }

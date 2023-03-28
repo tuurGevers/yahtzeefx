@@ -8,11 +8,20 @@ import javafx.scene.layout.*;
 
 import java.util.Objects;
 
+/**
+ * The type Yahtzee view.
+ */
 public class YahtzeeView extends GridPane {
     private GameView gameView;
     private ScoreView scoreView;
     private SelectedView selectedView;
     private PreferenceView pView;
+
+    /**
+     * Instantiates a new Yahtzee view.
+     *
+     * @param preferenceView the preference view
+     */
     public YahtzeeView(PreferenceView preferenceView){
         initialiseNodes(preferenceView);
         layoutNodes();
@@ -45,14 +54,29 @@ public class YahtzeeView extends GridPane {
 
     }
 
+    /**
+     * Gets game view.
+     *
+     * @return the game view
+     */
     public GameView getGameView() {
         return gameView;
     }
 
+    /**
+     * Gets score view.
+     *
+     * @return the score view
+     */
     public ScoreView getScoreView() {
         return scoreView;
     }
 
+    /**
+     * Gets selected view.
+     *
+     * @return the selected view
+     */
     public SelectedView getSelectedView() {
         return selectedView;
     }
